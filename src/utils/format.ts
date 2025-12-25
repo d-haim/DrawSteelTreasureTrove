@@ -16,9 +16,6 @@ export type PowerRollPart =
 export function parsePowerRolls(text: string): PowerRollPart[] {
   if (!text) return []
 
-  // Replace intensity markers with glyphs first
-  text = replaceIntensityGlyphs(text)
-
   const parts: PowerRollPart[] = []
   let m: RegExpExecArray | null
   const matches: { idx: number; marker: string }[] = []
@@ -51,9 +48,6 @@ export function parsePowerRolls(text: string): PowerRollPart[] {
 export function formatPowerRollsHtml(text: string, forPrint = false) {
   if (!text) return ''
 
-  // Replace intensity markers with glyphs first
-  text = replaceIntensityGlyphsHtml(text)
-
   function esc(s: string) {
     return escapeHtml(s).replace(/\n/g, '<br/>')
   }
@@ -66,13 +60,13 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
   }
 
   if (matches.length === 0) {
-    return `<p>${esc(text)}</p>`
+    return `<p>${replaceIntensityGlyphsHtml(esc(text))}</p>`
   }
 
   // leading text
   if (matches[0].idx > 0) {
     const lead = text.slice(0, matches[0].idx).trim()
-    if (lead) result += `<p>${esc(lead)}</p>`
+    if (lead) result += `<p>${replaceIntensityGlyphsHtml(esc(lead))}</p>`
   }
 
   for (let i = 0; i < matches.length; i++) {
@@ -81,8 +75,9 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
     const end = i + 1 < matches.length ? matches[i + 1].idx : text.length
     let desc = text.slice(start, end).trim()
     desc = desc.replace(/^[:\-\s]+/, '')
+    const safeDesc = replaceIntensityGlyphsHtml(esc(desc))
 
-    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${esc(desc)}</span></div>`
+    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${safeDesc}</span></div>`
   }
 
   return result
@@ -92,9 +87,6 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
 import type { Ability, PowerRoll } from '../types/items'
 
 function prStringToHtml(line: string, forPrint = false) {
-  // Replace intensity markers with glyphs first
-  line = replaceIntensityGlyphsHtml(line)
-
   // Header detection: lines that start with 'Power Roll' (case-insensitive)
   if (/^\s*Power\s+Roll\b/i.test(line)) {
     return `<div class="power-roll power-roll-header">${escapeHtml(line.trim())}</div>`
@@ -104,12 +96,12 @@ function prStringToHtml(line: string, forPrint = false) {
   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
   if (m) {
     const marker = m[1].trim()
-    const desc = m[2].trim()
-    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
+    const desc = replaceIntensityGlyphsHtml(escapeHtml(m[2].trim()))
+    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${desc}</span></div>`
   }
 
   // fallback: treat as single-line PR header/desc
-  return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
+  return `<div class="power-roll"><span class="pr-desc">${replaceIntensityGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
 }
 
 export function formatAbilityHtml(a: Ability, forPrint = false) {
@@ -194,25 +186,35 @@ export function replaceIntensityGlyphs(text: string): string {
     .replace(/A<WEAK/g, String.fromCharCode(0x0041) + String.fromCharCode(0x0078))
     .replace(/A<AVERAGE/g, String.fromCharCode(0x0041) + String.fromCharCode(0x0079))
     .replace(/A<STRONG/g, String.fromCharCode(0x0041) + String.fromCharCode(0x007A))
+    // Numeric tiers: include the leading letter glyph + digit glyph
+    .replace(/([IMPRA])<([0-6])/g, (_, letter: string, d: string) => String.fromCharCode(letter.charCodeAt(0)) + String.fromCharCode(0x0030 + Number(d)))
+    // Fallback: bare <digit> (no letter prefix)
+    .replace(/<([0-6])/g, (_, d: string) => String.fromCharCode(0x0030 + Number(d)))
 }
 
 export function replaceIntensityGlyphsHtml(text: string): string {
   if (!text) return text
+
+  const strengthToChar: Record<string, string> = {
+    WEAK: '0078', // x
+    AVERAGE: '0079', // y
+    STRONG: '007A' // z
+  }
+
   return text
-    .replace(/I<WEAK/g, '<span class="ds-glyph">&#x0049;&#x0078;</span>')
-    .replace(/I<AVERAGE/g, '<span class="ds-glyph">&#x0049;&#x0079;</span>')
-    .replace(/I<STRONG/g, '<span class="ds-glyph">&#x0049;&#x007A;</span>')
-    .replace(/M<WEAK/g, '<span class="ds-glyph">&#x004D;&#x0078;</span>')
-    .replace(/M<AVERAGE/g, '<span class="ds-glyph">&#x004D;&#x0079;</span>')
-    .replace(/M<STRONG/g, '<span class="ds-glyph">&#x004D;&#x007A;</span>')
-    .replace(/P<WEAK/g, '<span class="ds-glyph">&#x0050;&#x0078;</span>')
-    .replace(/P<AVERAGE/g, '<span class="ds-glyph">&#x0050;&#x0079;</span>')
-    .replace(/P<STRONG/g, '<span class="ds-glyph">&#x0050;&#x007A;</span>')
-    .replace(/R<WEAK/g, '<span class="ds-glyph">&#x0052;&#x0078;</span>')
-    .replace(/R<AVERAGE/g, '<span class="ds-glyph">&#x0052;&#x0079;</span>')
-    .replace(/R<STRONG/g, '<span class="ds-glyph">&#x0052;&#x007A;</span>')
-    .replace(/A<WEAK/g, '<span class="ds-glyph">&#x0041;&#x0078;</span>')
-    .replace(/A<AVERAGE/g, '<span class="ds-glyph">&#x0041;&#x0079;</span>')
-    .replace(/A<STRONG/g, '<span class="ds-glyph">&#x0041;&#x007A;</span>')
+    .replace(/([IMPRA])(?:<|&lt;|&#60;)(WEAK|AVERAGE|STRONG)/g, (_, letter: string, strength: string) => {
+      const suffix = strengthToChar[strength]
+      if (!suffix) return `${letter}<${strength}`
+
+      // Prefix letter stays as-is; second codepoint encodes intensity (x/y/z)
+      const codepoint = letter.charCodeAt(0).toString(16).padStart(4, '0').toUpperCase()
+      return `<span class="ds-glyph">&#x${codepoint};&#x${suffix};</span>`
+    })
+    // Numeric tiers: include optional leading letter glyph if provided
+    .replace(/([IMPRA])?(?:<|&lt;|&#60;)([0-6])/g, (_, letter: string, d: string) => {
+      const digit = (0x0030 + Number(d)).toString(16).padStart(4, '0').toUpperCase()
+      const prefix = letter ? letter.charCodeAt(0).toString(16).padStart(4, '0').toUpperCase() : ''
+      return `<span class="ds-glyph">${prefix ? `&#x${prefix};` : ''}&#x${digit};</span>`
+    })
 }
 

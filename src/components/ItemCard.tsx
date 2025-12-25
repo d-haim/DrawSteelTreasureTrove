@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
-import { parsePowerRolls, markerToGlyphChar } from '../utils/format'
+import { parsePowerRolls, markerToGlyphChar, replaceIntensityGlyphsHtml, escapeHtml } from '../utils/format'
 
 export default function ItemCard({
   item,
@@ -17,6 +17,8 @@ export default function ItemCard({
   showProject?: boolean
   compact?: boolean
 }) {
+  const toGlyphHtml = (text: string) => ({ __html: replaceIntensityGlyphsHtml(escapeHtml(text)) })
+
   return (
     <article className={`item-card ${compact ? 'compact' : ''}`}>
       <header>
@@ -35,7 +37,7 @@ export default function ItemCard({
         </div>
       )}
 
-      {item.description && <p className="desc">{item.description}</p>}
+      {item.description && <p className="desc" dangerouslySetInnerHTML={toGlyphHtml(item.description)} />}
 
       {(item.effect || (item.abilities && item.abilities.length > 0) || (item.power_roll && item.power_roll.length > 0)) && (
         <details open={compact}>
@@ -44,7 +46,16 @@ export default function ItemCard({
 
 
             {/* base effect text */}
-            {item.effect && parsePowerRolls(item.effect).map((part, i) => (part.type === 'plain' ? <p key={`e-${i}`}>{part.text}</p> : <div className="power-roll" key={`e-${i}`}><span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span> <span className="pr-desc">{part.desc}</span></div>))}
+            {item.effect && parsePowerRolls(item.effect).map((part, i) => (
+              part.type === 'plain' ? (
+                <p key={`e-${i}`} dangerouslySetInnerHTML={toGlyphHtml(part.text)} />
+              ) : (
+                <div className="power-roll" key={`e-${i}`}>
+                  <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
+                  <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
+                </div>
+              )
+            ))}
 
             {/* top-level structured power_rolls (render after effect text) */}
             {item.power_roll && item.power_roll.length > 0 && (
@@ -53,8 +64,17 @@ export default function ItemCard({
                   // header (bold in item card)
                   if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`pr-${i}`}><strong>{line.trim()}</strong></div>)
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-                  if (m) return (<div className="power-roll" key={`pr-${i}`}><span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span> <span className="pr-desc">{m[2].trim()}</span></div>)
-                  return (<div className="power-roll" key={`pr-${i}`}><span className="pr-desc">{line.trim()}</span></div>)
+                  if (m) return (
+                    <div className="power-roll" key={`pr-${i}`}>
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(m[2].trim())} />
+                    </div>
+                  )
+                  return (
+                    <div className="power-roll" key={`pr-${i}`}>
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(line.trim())} />
+                    </div>
+                  )
                 })}
               </div>
             )}
@@ -63,7 +83,16 @@ export default function ItemCard({
             {item.abilities && item.abilities.length > 0 && item.abilities.map((a, ai) => (
               <div className="ability" key={`ab-${ai}`}>
                 <h4>{a.name}</h4>
-                {a.description && parsePowerRolls(a.description).map((pp, j) => pp.type === 'plain' ? <p key={`ab-${ai}-d-${j}`}>{pp.text}</p> : <div className="power-roll" key={`ab-${ai}-d-${j}`}><span className="range"><span className="ds-glyph">{markerToGlyphChar(pp.marker)}</span></span> <span className="pr-desc">{pp.desc}</span></div>)}
+                {a.description && parsePowerRolls(a.description).map((pp, j) => (
+                  pp.type === 'plain' ? (
+                    <p key={`ab-${ai}-d-${j}`} dangerouslySetInnerHTML={toGlyphHtml(pp.text)} />
+                  ) : (
+                    <div className="power-roll" key={`ab-${ai}-d-${j}`}>
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(pp.marker)}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(pp.desc)} />
+                    </div>
+                  )
+                ))}
 
                 <div className="ability-meta">
                   {a.keywords && a.keywords.length > 0 && <div><strong>Keywords:</strong> {a.keywords.join(', ')}</div>}
@@ -77,12 +106,30 @@ export default function ItemCard({
                   // header
                   if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`ab-${ai}-pr-${pi}`}><strong>{line.trim()}</strong></div>)
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-                  if (m) return (<div className="power-roll" key={`ab-${ai}-pr-${pi}`}><span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span> <span className="pr-desc">{m[2].trim()}</span></div>)
-                  return (<div className="power-roll" key={`ab-${ai}-pr-${pi}`}><span className="pr-desc">{line.trim()}</span></div>)
+                  if (m) return (
+                    <div className="power-roll" key={`ab-${ai}-pr-${pi}`}>
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(m[2].trim())} />
+                    </div>
+                  )
+                  return (
+                    <div className="power-roll" key={`ab-${ai}-pr-${pi}`}>
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(line.trim())} />
+                    </div>
+                  )
                 })}
 
                 {/* ability effect */}
-                {a.effect && parsePowerRolls(a.effect).map((pp, j) => pp.type === 'plain' ? <p key={`ab-${ai}-eff-${j}`}>{pp.text}</p> : <div className="power-roll" key={`ab-${ai}-eff-${j}`}><span className="range">{pp.marker}</span> <span className="pr-desc">{pp.desc}</span></div>)}
+                {a.effect && parsePowerRolls(a.effect).map((pp, j) => (
+                  pp.type === 'plain' ? (
+                    <p key={`ab-${ai}-eff-${j}`} dangerouslySetInnerHTML={toGlyphHtml(pp.text)} />
+                  ) : (
+                    <div className="power-roll" key={`ab-${ai}-eff-${j}`}>
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(pp.marker)}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(pp.desc)} />
+                    </div>
+                  )
+                ))}
               </div>
             ))}
           </div>

@@ -1,4 +1,4 @@
-export type Echelon = 'First' | 'Second' | 'Third' | 'Fourth' | string
+export type Echelon = 'First' | 'Second' | 'Third' | 'Fourth'
 
 export interface Project {
   prerequisite?: string
@@ -23,11 +23,11 @@ export interface Ability {
 export interface BaseItem {
   name: string
   type: string
-  echelon?: Echelon
+  echelon: Echelon
   source?: string
   keywords?: string[]
-  description?: string
-  effect?: string
+  description: string
+  effect: string
   abilities?: Ability[]
   power_roll?: string[]
   project?: Project

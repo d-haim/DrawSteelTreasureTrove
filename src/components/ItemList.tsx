@@ -40,7 +40,15 @@ export default function ItemList({
   const [includeProjectInPrint, setIncludeProjectInPrint] = useState(true)
 
   function addToDeck(item: BaseItem & { __category?: string }) {
-    setDeck((d) => (d.some((x) => x.type === item.type && x.name === item.name) ? d : [...d, item]))
+    setDeck((d) => {
+      const idx = d.findIndex((x) => x.name === item.name)
+      if (idx >= 0) {
+        const next = [...d]
+        next[idx] = item
+        return next
+      }
+      return [...d, item]
+    })
   }
 
   function removeFromDeck(item: BaseItem & { __category?: string }) {
@@ -278,7 +286,7 @@ export default function ItemList({
                 item={it as Leveled}
                 onAddToDeck={() => addToDeck(it as BaseItem & { __category?: string })}
                 onRemoveFromDeck={() => removeFromDeck(it as BaseItem & { __category?: string })}
-                inDeck={deck.some((x) => x.name === it.name && x.type === it.type)}
+                inDeck={deck.some((x) => x.name === it.name)}
                 showProject={includeProjectInPrint}
               />
             ) : (
@@ -287,7 +295,7 @@ export default function ItemList({
                 item={it as Consumable | Trinket}
                 onAddToDeck={() => addToDeck(it as BaseItem & { __category?: string })}
                 onRemoveFromDeck={() => removeFromDeck(it as BaseItem & { __category?: string })}
-                inDeck={deck.some((x) => x.name === it.name && x.type === it.type)}
+                inDeck={deck.some((x) => x.name === it.name)}
                 showProject={includeProjectInPrint}
               />
             ))

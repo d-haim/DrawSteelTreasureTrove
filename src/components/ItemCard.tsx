@@ -47,13 +47,17 @@ export default function ItemCard({
             {item.effect && parsePowerRolls(item.effect).map((part, i) => (part.type === 'plain' ? <p key={`e-${i}`}>{part.text}</p> : <div className="power-roll" key={`e-${i}`}><span className="range">{part.marker}:</span> <span className="pr-desc">{part.desc}</span></div>))}
 
             {/* top-level structured power_rolls (render after effect text) */}
-            {item.power_roll && item.power_roll.length > 0 && item.power_roll.map((line, i) => {
-              // header (bold in item card)
-              if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`pr-${i}`}><strong>{line.trim()}</strong></div>)
-              const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-              if (m) return (<div className="power-roll" key={`pr-${i}`}><span className="range">{m[1].trim()}:</span> <span className="pr-desc">{m[2].trim()}</span></div>)
-              return (<div className="power-roll" key={`pr-${i}`}><span className="pr-desc">{line.trim()}</span></div>)
-            })}
+            {item.power_roll && item.power_roll.length > 0 && (
+              <div className="item-power-rolls">
+                {item.power_roll.map((line, i) => {
+                  // header (bold in item card)
+                  if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`pr-${i}`}><strong>{line.trim()}</strong></div>)
+                  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
+                  if (m) return (<div className="power-roll" key={`pr-${i}`}><span className="range">{m[1].trim()}:</span> <span className="pr-desc">{m[2].trim()}</span></div>)
+                  return (<div className="power-roll" key={`pr-${i}`}><span className="pr-desc">{line.trim()}</span></div>)
+                })}
+              </div>
+            )}
 
             {/* structured abilities, if present */}
             {item.abilities && item.abilities.length > 0 && item.abilities.map((a, ai) => (

@@ -16,6 +16,9 @@ export type PowerRollPart =
 export function parsePowerRolls(text: string): PowerRollPart[] {
   if (!text) return []
 
+  // Replace intensity markers with glyphs first
+  text = replaceIntensityGlyphs(text)
+
   const parts: PowerRollPart[] = []
   let m: RegExpExecArray | null
   const matches: { idx: number; marker: string }[] = []
@@ -47,6 +50,9 @@ export function parsePowerRolls(text: string): PowerRollPart[] {
 
 export function formatPowerRollsHtml(text: string, forPrint = false) {
   if (!text) return ''
+
+  // Replace intensity markers with glyphs first
+  text = replaceIntensityGlyphsHtml(text)
 
   function esc(s: string) {
     return escapeHtml(s).replace(/\n/g, '<br/>')
@@ -86,6 +92,9 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
 import type { Ability, PowerRoll } from '../types/items'
 
 function prStringToHtml(line: string, forPrint = false) {
+  // Replace intensity markers with glyphs first
+  line = replaceIntensityGlyphsHtml(line)
+
   // Header detection: lines that start with 'Power Roll' (case-insensitive)
   if (/^\s*Power\s+Roll\b/i.test(line)) {
     return `<div class="power-roll power-roll-header">${escapeHtml(line.trim())}</div>`
@@ -164,5 +173,22 @@ export function markerToGlyphChar(marker: string) {
   if (/^\d+\s*-\s*\d+/.test(m)) return String.fromCharCode(parseInt('002D', 16))
   if (/^\d+\+/.test(m)) return String.fromCharCode(parseInt('005D', 16))
   return marker
+}
+
+// Replace intensity markers with glyphs
+export function replaceIntensityGlyphs(text: string): string {
+  if (!text) return text
+  return text
+    .replace(/I<WEAK/g, String.fromCharCode(parseInt('0078', 16)))
+    .replace(/I<AVERAGE/g, String.fromCharCode(parseInt('0079', 16)))
+    .replace(/I<STRONG/g, String.fromCharCode(parseInt('007A', 16)))
+}
+
+export function replaceIntensityGlyphsHtml(text: string): string {
+  if (!text) return text
+  return text
+    .replace(/I<WEAK/g, '<span class="ds-glyph">&#x0078;</span>')
+    .replace(/I<AVERAGE/g, '<span class="ds-glyph">&#x0079;</span>')
+    .replace(/I<STRONG/g, '<span class="ds-glyph">&#x007A;</span>')
 }
 

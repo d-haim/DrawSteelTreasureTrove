@@ -60,13 +60,13 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
   }
 
   if (matches.length === 0) {
-    return `<p>${replaceIntensityGlyphsHtml(esc(text))}</p>`
+    return `<p>${replacePotencyGlyphsHtml(esc(text))}</p>`
   }
 
   // leading text
   if (matches[0].idx > 0) {
     const lead = text.slice(0, matches[0].idx).trim()
-    if (lead) result += `<p>${replaceIntensityGlyphsHtml(esc(lead))}</p>`
+    if (lead) result += `<p>${replacePotencyGlyphsHtml(esc(lead))}</p>`
   }
 
   for (let i = 0; i < matches.length; i++) {
@@ -75,7 +75,7 @@ export function formatPowerRollsHtml(text: string, forPrint = false) {
     const end = i + 1 < matches.length ? matches[i + 1].idx : text.length
     let desc = text.slice(start, end).trim()
     desc = desc.replace(/^[:\-\s]+/, '')
-    const safeDesc = replaceIntensityGlyphsHtml(esc(desc))
+    const safeDesc = replacePotencyGlyphsHtml(esc(desc))
 
     result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${safeDesc}</span></div>`
   }
@@ -96,18 +96,18 @@ function prStringToHtml(line: string, forPrint = false) {
   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
   if (m) {
     const marker = m[1].trim()
-    const desc = replaceIntensityGlyphsHtml(escapeHtml(m[2].trim()))
+    const desc = replacePotencyGlyphsHtml(escapeHtml(m[2].trim()))
     return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${desc}</span></div>`
   }
 
   // fallback: treat as single-line PR header/desc
-  return `<div class="power-roll"><span class="pr-desc">${replaceIntensityGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
+  return `<div class="power-roll"><span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
 }
 
 export function formatAbilityHtml(a: Ability, forPrint = false) {
   const parts: string[] = [];
   parts.push(`<div class="ability"><h4>${escapeHtml(a.name)}</h4>`);
-  if (a.description) parts.push(`<p class="desc ability-desc">${replaceIntensityGlyphsHtml(escapeHtml(a.description))}</p>`);
+  if (a.description) parts.push(`<p class="desc ability-desc">${replacePotencyGlyphsHtml(escapeHtml(a.description))}</p>`);
 
   // Keywords and type on one line
   if ((a.keywords && a.keywords.length > 0) || a.type) {
@@ -163,8 +163,8 @@ export function markerToGlyphChar(marker: string) {
   return marker
 }
 
-// Replace intensity markers with glyphs
-export function replaceIntensityGlyphs(text: string): string {
+// Replace potency markers with glyphs
+export function replacePotencyGlyphs(text: string): string {
   if (!text) return text
   return text
     .replace(/I<WEAK/g, String.fromCharCode(0x0049) + String.fromCharCode(0x0078))
@@ -188,7 +188,7 @@ export function replaceIntensityGlyphs(text: string): string {
     .replace(/<([0-6])/g, (_, d: string) => String.fromCharCode(0x0030 + Number(d)))
 }
 
-export function replaceIntensityGlyphsHtml(text: string): string {
+export function replacePotencyGlyphsHtml(text: string): string {
   if (!text) return text
 
   const strengthToChar: Record<string, string> = {
@@ -202,7 +202,7 @@ export function replaceIntensityGlyphsHtml(text: string): string {
       const suffix = strengthToChar[strength]
       if (!suffix) return `${letter}<${strength}`
 
-      // Prefix letter stays as-is; second codepoint encodes intensity (x/y/z)
+      // Prefix letter stays as-is; second codepoint encodes potency (x/y/z)
       const codepoint = letter.charCodeAt(0).toString(16).padStart(4, '0').toUpperCase()
       return `<span class="ds-glyph">&#x${codepoint};&#x${suffix};</span>`
     })

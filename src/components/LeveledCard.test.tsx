@@ -54,7 +54,7 @@ describe('LeveledCard', () => {
 
   it('shows Add to deck button when not in deck', () => {
     render(<LeveledCard item={mockLeveledItem} inDeck={false} onAddToDeck={() => {}} />)
-    expect(screen.getByText('Add to print deck')).toBeInTheDocument()
+    expect(screen.getByText('Add to deck')).toBeInTheDocument()
   })
 
   it('shows Remove from deck button when in deck', () => {

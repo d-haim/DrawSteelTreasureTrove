@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
-import { parsePowerRolls, markerToGlyphChar, replaceIntensityGlyphsHtml, escapeHtml } from '../utils/format'
+import { parsePowerRolls, markerToGlyphChar, replacePotencyGlyphsHtml, escapeHtml } from '../utils/format'
 
 export default function ItemCard({
   item,
@@ -17,7 +17,7 @@ export default function ItemCard({
   showProject?: boolean
   compact?: boolean
 }) {
-  const toGlyphHtml = (text: string) => ({ __html: replaceIntensityGlyphsHtml(escapeHtml(text)) })
+  const toGlyphHtml = (text: string) => ({ __html: replacePotencyGlyphsHtml(escapeHtml(text)) })
 
   return (
     <article className={`item-card ${compact ? 'compact' : ''}`}>

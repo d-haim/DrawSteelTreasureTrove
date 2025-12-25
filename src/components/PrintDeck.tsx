@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
-import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml, replaceIntensityGlyphsHtml } from '../utils/format'
+import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml, replacePotencyGlyphsHtml } from '../utils/format'
 // Use Vite asset bundling to get the correct hashed URL for the font in production
 // Path from src/components to assets at project root
 import dsOpenGlyphsUrl from '../../assets/DS Open Glyphs 1.75 Regular.ttf?url'
@@ -115,16 +115,16 @@ export default function PrintDeck({
                   <span class="muted" style="font-weight:bold;font-size:13px;">${escapeHtml(it.type)}</span>
                 </div>
                 ${(it.keywords && it.keywords.length > 0) ? `<div style="font-weight:bold;margin-bottom:0.2em">${escapeHtml(it.keywords.join(', '))}</div>` : ''}
-                <div class="desc">${replaceIntensityGlyphsHtml(escapeHtml((it as any).description || ''))}</div>
+                <div class="desc">${replacePotencyGlyphsHtml(escapeHtml((it as any).description || ''))}</div>
                 <div class="effect">${((it as any).first_level || (it as any).fifth_level || (it as any).ninth_level) ? `
-                  ${ (it as any).first_level ? `<p class="leveled-line"><strong>1st Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).first_level)))}</p>` : ''}
-                  ${ (it as any).fifth_level ? `<p class="leveled-line"><strong>5th Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).fifth_level)))}</p>` : ''}
-                  ${ (it as any).ninth_level ? `<p class="leveled-line"><strong>9th Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).ninth_level)))}</p>` : formatPowerRollsHtml((it as any).effect || '', true)}
+                  ${ (it as any).first_level ? `<p class="leveled-line"><strong>1st Level:</strong> ${replacePotencyGlyphsHtml(escapeHtml(levelSummary((it as any).first_level)))}</p>` : ''}
+                  ${ (it as any).fifth_level ? `<p class="leveled-line"><strong>5th Level:</strong> ${replacePotencyGlyphsHtml(escapeHtml(levelSummary((it as any).fifth_level)))}</p>` : ''}
+                  ${ (it as any).ninth_level ? `<p class="leveled-line"><strong>9th Level:</strong> ${replacePotencyGlyphsHtml(escapeHtml(levelSummary((it as any).ninth_level)))}</p>` : formatPowerRollsHtml((it as any).effect || '', true)}
                 ` : `${formatPowerRollsHtml((it as any).effect || '', true)}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim(), true)}</span> <span class="pr-desc">${replaceIntensityGlyphsHtml(escapeHtml(m[2].trim()))}</span></div>`
-                  return `<div class="power-roll"><span class="pr-desc">${replaceIntensityGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
+                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim(), true)}</span> <span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(m[2].trim()))}</span></div>`
+                  return `<div class="power-roll"><span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
                 }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities, true)}
                 </div>
                 ${includeProject && it.project ? `<div class="project"><strong>Project:</strong><div>Prerequisite: ${escapeHtml(it.project.prerequisite || '')}</div><div>Source: ${escapeHtml(it.project.source || '')}</div><div>Characteristics: ${escapeHtml((it.project.characteristics || []).join(', '))}</div><div>Goal: ${escapeHtml(it.project.goal || '')}</div></div>` : ''}

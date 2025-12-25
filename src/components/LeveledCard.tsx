@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Leveled, BaseItem } from '../types/items'
-import { formatPowerRollsHtml, escapeHtml, replaceIntensityGlyphsHtml } from '../utils/format'
+import { formatPowerRollsHtml, escapeHtml, replacePotencyGlyphsHtml } from '../utils/format'
 
 export default function LeveledCard({
   item,
@@ -17,7 +17,7 @@ export default function LeveledCard({
   showProject?: boolean
   compact?: boolean
 }) {
-  const toGlyphHtml = (text: string) => ({ __html: replaceIntensityGlyphsHtml(escapeHtml(text)) })
+  const toGlyphHtml = (text: string) => ({ __html: replacePotencyGlyphsHtml(escapeHtml(text)) })
 
   return (
     <article className={`item-card leveled ${compact ? 'compact' : ''}`}>
@@ -73,7 +73,7 @@ export default function LeveledCard({
         <div className="card-actions">
           {!inDeck && onAddToDeck && (
             <button className="chip-btn" onClick={() => onAddToDeck(item)}>
-              Add to print deck
+              Add to deck
             </button>
           )}
 

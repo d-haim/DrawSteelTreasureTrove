@@ -3,6 +3,9 @@ import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
 import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml, replaceIntensityGlyphsHtml } from '../utils/format'
+// Use Vite asset bundling to get the correct hashed URL for the font in production
+// Path from src/components to assets at project root
+import dsOpenGlyphsUrl from '../../assets/DS Open Glyphs 1.75 Regular.ttf?url'
 
 export default function PrintDeck({
   deck,
@@ -65,7 +68,7 @@ export default function PrintDeck({
           <style>
             @font-face{
               font-family: 'DS Open Glyphs';
-              src: url('/assets/DS%20Open%20Glyphs%201.75%20Regular.ttf') format('truetype');
+              src: url('${dsOpenGlyphsUrl}') format('truetype');
               font-weight: normal;
               font-style: normal;
               font-display: swap;

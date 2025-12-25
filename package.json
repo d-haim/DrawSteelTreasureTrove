@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,md,json}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md,json}\"",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -23,6 +24,7 @@
     "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-react": "^7.0.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "gh-pages": "^6.3.0",
     "prettier": "^2.8.0",
     "typescript": "^5.0.0",
     "vite": "^7.3.0"

@@ -1,8 +1,8 @@
 import React from 'react'
 import ItemList from './components/ItemList'
-import consumables from '../Consumables.json'
-import trinkets from '../Trinkets.json'
-import leveled from '../Leveled.json'
+import consumables from '../assets/Consumables.json'
+import trinkets from '../assets/Trinkets.json'
+import leveled from '../assets/Leveled.json'
 import type { Consumable, Trinket, Leveled as LeveledType } from './types/items'
 
 const consumablesTyped = consumables as unknown as Consumable[]

@@ -56,7 +56,7 @@ export default function PrintDeck({
           <style>
             @font-face{
               font-family: 'DS Open Glyphs';
-              src: url('/DS%20Open%20Glyphs%201.75%20Regular.ttf') format('truetype');
+              src: url('/assets/DS%20Open%20Glyphs%201.75%20Regular.ttf') format('truetype');
               font-weight: normal;
               font-style: normal;
               font-display: swap;

@@ -74,59 +74,77 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
     setGoal('')
   }
 
+  const [collapsed, setCollapsed] = useState(true)
+
   return (
-    <form className="custom-form" onSubmit={handleSubmit}>
-      <h4>Create custom card</h4>
-      <div className="row">
-        <input placeholder="Name*" value={name} onChange={(e) => setName(e.target.value)} />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option>Consumable</option>
-          <option>Trinket</option>
-          <option>Leveled</option>
-        </select>
+    <div className={`custom-form-wrapper ${collapsed ? 'collapsed' : 'expanded'}`}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'space-between' }}>
+        <h4 style={{ margin: 0 }}>Create custom card</h4>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button type="button" className="chip-btn" onClick={() => setCollapsed(!collapsed)} aria-expanded={!collapsed}>
+            {collapsed ? 'Expand' : 'Collapse'}
+          </button>
+        </div>
       </div>
 
-      <div className="row">
-        <input placeholder="Echelon (optional)" value={echelon} onChange={(e) => setEchelon(e.target.value)} />
-      </div>
+      {collapsed ? (
+        <div className="custom-form-collapsed" style={{ marginTop: 8 }}>
+          Compact mode — expand to create a custom card
+        </div>
+      ) : (
+        <form className="custom-form" onSubmit={handleSubmit}>
+          <div className="row">
+            <input placeholder="Name*" value={name} onChange={(e) => setName(e.target.value)} />
+            <select value={type} onChange={(e) => setType(e.target.value)}>
+              <option>Consumable</option>
+              <option>Trinket</option>
+              <option>Leveled</option>
+            </select>
+          </div>
 
-      <div className="row">
-        <textarea placeholder="Short description" value={description} onChange={(e) => setDescription(e.target.value)} />
-      </div>
+          <div className="row">
+            <input placeholder="Echelon (optional)" value={echelon} onChange={(e) => setEchelon(e.target.value)} />
+          </div>
 
-      <div className="row">
-        <textarea placeholder="Effect (full text shown on card)" value={effect} onChange={(e) => setEffect(e.target.value)} />
-      </div>
+          <div className="row">
+            <textarea placeholder="Short description" value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
 
-      <div className="row">
-        <textarea placeholder={"Abilities (optional) — paste JSON array of {name,description,keywords,type,range,targets,effect,power_rolls}"} value={abilitiesJson} onChange={(e) => setAbilitiesJson(e.target.value)} />
-      </div>
+          <div className="row">
+            <textarea placeholder="Effect (full text shown on card)" value={effect} onChange={(e) => setEffect(e.target.value)} />
+          </div>
 
-      <div className="row">
-        <textarea placeholder={"Power Rolls (optional) — paste JSON array of {marker, desc}"} value={powerRollsJson} onChange={(e) => setPowerRollsJson(e.target.value)} />
-      </div>
+          <div className="row">
+            <textarea placeholder={"Abilities (optional) — paste JSON array of {name,description,keywords,type,range,targets,effect,power_rolls}"} value={abilitiesJson} onChange={(e) => setAbilitiesJson(e.target.value)} />
+          </div>
 
-      <div className="row">
-        <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <strong>Project (optional)</strong>
-        </label>
-      </div>
+          <div className="row">
+            <textarea placeholder={"Power Rolls (optional) — paste JSON array of {marker, desc}"} value={powerRollsJson} onChange={(e) => setPowerRollsJson(e.target.value)} />
+          </div>
 
-      <div className="project-fields">
-        <input placeholder="Project prerequisite" value={prerequisite} onChange={(e) => setPrerequisite(e.target.value)} />
-        <input placeholder="Project source" value={source} onChange={(e) => setSource(e.target.value)} />
-        <input placeholder="Characteristics (comma-separated)" value={characteristics} onChange={(e) => setCharacteristics(e.target.value)} />
-        <input placeholder="Goal" value={goal} onChange={(e) => setGoal(e.target.value)} />
-      </div>
+          <div className="row">
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <strong>Project (optional)</strong>
+            </label>
+          </div>
 
-      <div className="row actions">
-        <button type="submit" className="chip-btn" disabled={!name.trim()}>
-          Add to deck
-        </button>
-        <button type="button" className="chip-btn" onClick={reset}>
-          Reset
-        </button>
-      </div>
-    </form>
+          <div className="project-fields">
+            <input placeholder="Project prerequisite" value={prerequisite} onChange={(e) => setPrerequisite(e.target.value)} />
+            <input placeholder="Project source" value={source} onChange={(e) => setSource(e.target.value)} />
+            <input placeholder="Characteristics (comma-separated)" value={characteristics} onChange={(e) => setCharacteristics(e.target.value)} />
+            <input placeholder="Goal" value={goal} onChange={(e) => setGoal(e.target.value)} />
+          </div>
+
+          <div className="row actions">
+            <button type="submit" className="chip-btn" disabled={!name.trim()}>
+              Add to deck
+            </button>
+            <button type="button" className="chip-btn" onClick={reset}>
+              Reset
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
   )
 }

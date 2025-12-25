@@ -51,6 +51,30 @@ export default function ItemList({
     setDeck([])
   }
 
+  function moveUp(item: BaseItem & { __category?: string }) {
+    setDeck((d) => {
+      const idx = d.findIndex((x) => x.type === item.type && x.name === item.name)
+      if (idx <= 0) return d
+      const next = [...d]
+      const tmp = next[idx - 1]
+      next[idx - 1] = next[idx]
+      next[idx] = tmp
+      return next
+    })
+  }
+
+  function moveDown(item: BaseItem & { __category?: string }) {
+    setDeck((d) => {
+      const idx = d.findIndex((x) => x.type === item.type && x.name === item.name)
+      if (idx < 0 || idx === d.length - 1) return d
+      const next = [...d]
+      const tmp = next[idx + 1]
+      next[idx + 1] = next[idx]
+      next[idx] = tmp
+      return next
+    })
+  }
+
   function pickRandom() {
     if (!filtered || filtered.length === 0) return
     const idx = Math.floor(Math.random() * filtered.length)
@@ -222,7 +246,7 @@ export default function ItemList({
             <div className="print-deck-panel">
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} />
+                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} onMoveUp={moveUp} onMoveDown={moveDown} />
                 </div>
 
                 <div style={{ width: 320 }}>

@@ -115,6 +115,14 @@ details summary{ cursor:pointer; color:var(--accent) }
 .print-deck{ border:1px dashed rgba(255,255,255,0.03); padding:0.6rem; border-radius:6px }
 .print-deck-controls{ display:flex; gap:8px; align-items:center }
 .print-deck-grid .item-card{ background: rgba(255,255,255,0.02); }
+.print-deck-collapsed{ padding:0.35rem 0.5rem; background: rgba(255,255,255,0.01); border-radius:6px; color:var(--muted) }
+.print-deck .chip-btn{ padding:0.2rem 0.5rem; font-size:0.9rem }
+
+/* Custom form collapsed */
+.custom-form-wrapper .chip-btn{ padding:0.2rem 0.5rem; font-size:0.9rem }
+.custom-form-collapsed{ padding:0.35rem 0.5rem; background: rgba(255,255,255,0.01); border-radius:6px; color:var(--muted); margin-top:8px }
+
+
 
 /* Custom form */
 .custom-form{ background: rgba(255,255,255,0.02); padding:0.6rem; border-radius:6px; display:flex; flex-direction:column; gap:8px }

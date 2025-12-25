@@ -157,9 +157,13 @@ details summary{ cursor:pointer; color:var(--accent) }
 .custom-form input.error, .custom-form select.error, .custom-form textarea.error{ border: 1px solid #f87171 !important; box-shadow: 0 0 0 4px rgba(248,113,113,0.06); }
 .custom-form .field-error{ color: #f87171; font-size: 0.85rem }
 
+.disclaimer{ margin-top: 24px; color: var(--muted); font-size: 0.85rem; white-space: pre-line; }
+
 /* Print media defaults */
 @media print{
   body *{ visibility: hidden }
   .print-only, .print-only *{ visibility: visible }
   .print-only{ position: absolute; left: 0; top:0; width:100% }
+  /* ensure the on-screen disclaimer is visible in print if present */
+  .disclaimer{ color:#666; font-size:12px; margin-top:16px }
 }

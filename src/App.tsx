@@ -16,6 +16,11 @@ export default function App() {
       <p>Create a printable deck of treasure cards for Draw Steel TTRPG.</p>
 
       <ItemList consumables={consumablesTyped} trinkets={trinketsTyped} leveled={leveledTyped} />
+
+      <div className="disclaimer" style={{ marginTop: 18 }}>
+        <p>Draw Steel Treasure Trove is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC.</p>
+        <p>DRAW STEEL © 2024 MCDM Productions, LLC.</p>
+      </div>
     </div>
   )
 }

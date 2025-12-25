@@ -5,8 +5,8 @@ import {
   formatPowerRollsHtml,
   markerToGlyphHtml,
   markerToGlyphChar,
-  replaceIntensityGlyphs,
-  replaceIntensityGlyphsHtml,
+  replacePotencyGlyphs,
+  replacePotencyGlyphsHtml,
   formatAbilityHtml,
   formatAbilitiesHtmlStructured
 } from './format'
@@ -74,9 +74,12 @@ describe('parsePowerRolls', () => {
   it('parses multiple markers', () => {
     const result = parsePowerRolls('<=11: Low 12-16: Mid 17+: High')
     expect(result).toHaveLength(3)
-    expect(result[0].marker).toBe('<=11')
-    expect(result[1].marker).toBe('12-16')
-    expect(result[2].marker).toBe('17+')
+    expect(result[0].type).toBe('pr')
+    expect(result[1].type).toBe('pr')
+    expect(result[2].type).toBe('pr')
+    if (result[0].type === 'pr') expect(result[0].marker).toBe('<=11')
+    if (result[1].type === 'pr') expect(result[1].marker).toBe('12-16')
+    if (result[2].type === 'pr') expect(result[2].marker).toBe('17+')
   })
 
   it('handles leading text before markers', () => {
@@ -88,7 +91,10 @@ describe('parsePowerRolls', () => {
 
   it('trims whitespace and removes leading punctuation from descriptions', () => {
     const result = parsePowerRolls('<=11:  -  Description')
-    expect(result[0].desc).toBe('Description')
+    expect(result[0].type).toBe('pr')
+    if (result[0].type === 'pr') {
+      expect(result[0].desc).toBe('Description')
+    }
   })
 })
 
@@ -199,85 +205,85 @@ describe('markerToGlyphChar', () => {
   })
 })
 
-describe('replaceIntensityGlyphs', () => {
+describe('replacePotencyGlyphs', () => {
   it('returns empty string for empty input', () => {
-    expect(replaceIntensityGlyphs('')).toBe('')
+    expect(replacePotencyGlyphs('')).toBe('')
   })
 
   it('replaces I<WEAK with correct glyphs', () => {
-    const result = replaceIntensityGlyphs('I<WEAK')
+    const result = replacePotencyGlyphs('I<WEAK')
     expect(result).toBe(String.fromCharCode(0x0049) + String.fromCharCode(0x0078))
   })
 
   it('replaces I<AVERAGE with correct glyphs', () => {
-    const result = replaceIntensityGlyphs('I<AVERAGE')
+    const result = replacePotencyGlyphs('I<AVERAGE')
     expect(result).toBe(String.fromCharCode(0x0049) + String.fromCharCode(0x0079))
   })
 
   it('replaces I<STRONG with correct glyphs', () => {
-    const result = replaceIntensityGlyphs('I<STRONG')
+    const result = replacePotencyGlyphs('I<STRONG')
     expect(result).toBe(String.fromCharCode(0x0049) + String.fromCharCode(0x007A))
   })
 
   it('replaces multiple markers in text', () => {
-    const result = replaceIntensityGlyphs('I<WEAK and M<STRONG')
+    const result = replacePotencyGlyphs('I<WEAK and M<STRONG')
     expect(result).toContain(String.fromCharCode(0x0049))
     expect(result).toContain(String.fromCharCode(0x004D))
   })
 
   it('replaces all letter variants (I, M, P, R, A)', () => {
     const text = 'I<WEAK M<WEAK P<WEAK R<WEAK A<WEAK'
-    const result = replaceIntensityGlyphs(text)
+    const result = replacePotencyGlyphs(text)
     expect(result).not.toContain('<WEAK')
   })
 
   it('replaces numeric tiers correctly', () => {
-    const result = replaceIntensityGlyphs('I<0 I<6')
+    const result = replacePotencyGlyphs('I<0 I<6')
     expect(result).toContain(String.fromCharCode(0x0049))
     expect(result).toContain(String.fromCharCode(0x0030))
     expect(result).toContain(String.fromCharCode(0x0036))
   })
 
   it('handles bare numeric tiers without letter prefix', () => {
-    const result = replaceIntensityGlyphs('<3')
+    const result = replacePotencyGlyphs('<3')
     expect(result).toContain(String.fromCharCode(0x0033))
   })
 })
 
-describe('replaceIntensityGlyphsHtml', () => {
+describe('replacePotencyGlyphsHtml', () => {
   it('returns empty string for empty input', () => {
-    expect(replaceIntensityGlyphsHtml('')).toBe('')
+    expect(replacePotencyGlyphsHtml('')).toBe('')
   })
 
-  it('wraps intensity markers in span with ds-glyph class', () => {
-    const result = replaceIntensityGlyphsHtml('I<WEAK')
+  it('wraps potency markers in span with ds-glyph class', () => {
+    const result = replacePotencyGlyphsHtml('I<WEAK')
     expect(result).toContain('class="ds-glyph"')
     expect(result).toContain('&#x0049;')
     expect(result).toContain('&#x0078;')
   })
 
   it('handles escaped HTML entities', () => {
-    const result = replaceIntensityGlyphsHtml('I&lt;WEAK')
+    const result = replacePotencyGlyphsHtml('I&lt;WEAK')
     expect(result).toContain('class="ds-glyph"')
   })
 
   it('replaces all strength levels', () => {
     const text = 'I<WEAK I<AVERAGE I<STRONG'
-    const result = replaceIntensityGlyphsHtml(text)
+    const result = replacePotencyGlyphsHtml(text)
     expect(result).toContain('&#x0078;') // WEAK
     expect(result).toContain('&#x0079;') // AVERAGE
     expect(result).toContain('&#x007A;') // STRONG
   })
 
   it('handles numeric tiers with letter prefix', () => {
-    const result = replaceIntensityGlyphsHtml('M<3')
+    const result = replacePotencyGlyphsHtml('M<3')
     expect(result).toContain('class="ds-glyph"')
     expect(result).toContain('&#x004D;')
     expect(result).toContain('&#x0033;')
   })
 
   it('handles bare numeric tiers', () => {
-    const result = replaceIntensityGlyphsHtml('<5')
+    const result = replacePotencyGlyphsHtml('<5')
     expect(result).toContain('class="ds-glyph"')
     expect(result).toContain('&#x0035;')
   })

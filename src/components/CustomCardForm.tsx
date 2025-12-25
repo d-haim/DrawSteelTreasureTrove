@@ -9,6 +9,10 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
   const [missingFields, setMissingFields] = useState<string[]>([])
   const [description, setDescription] = useState('')
   const [effect, setEffect] = useState('')
+  // Leveled item fields
+  const [firstLevel, setFirstLevel] = useState('')
+  const [fifthLevel, setFifthLevel] = useState('')
+  const [ninthLevel, setNinthLevel] = useState('')
   // Single ability fields (assume at most one ability)
   const [abilityName, setAbilityName] = useState('')
   const [abilityDescription, setAbilityDescription] = useState('')
@@ -46,7 +50,11 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
     const missing: string[] = []
     if (!name.trim()) missing.push('Name')
     if (!description.trim()) missing.push('Description')
-    if (!effect.trim()) missing.push('Effect')
+    if (type === 'Leveled') {
+      if (!firstLevel.trim()) missing.push('1st Level')
+    } else {
+      if (!effect.trim()) missing.push('Effect')
+    }
 
     if (missing.length) {
       setMissingFields(missing)
@@ -121,10 +129,15 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
       type: type || 'Custom',
       echelon: echelon as Echelon,
       description,
-      effect,
+      effect: type === 'Leveled' ? '' : effect,
       abilities: abilities || undefined,
       power_roll: power_roll || undefined,
-      project
+      project,
+      ...(type === 'Leveled' ? {
+        first_level: firstLevel.trim() || undefined,
+        fifth_level: fifthLevel.trim() || undefined,
+        ninth_level: ninthLevel.trim() || undefined
+      } : {})
     }
 
     onCreate(item)
@@ -139,6 +152,10 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
     setEchelon('First')
     setDescription('')
     setEffect('')
+    // reset leveled fields
+    setFirstLevel('')
+    setFifthLevel('')
+    setNinthLevel('')
     setFormError('')
     setMissingFields([])
 
@@ -247,12 +264,35 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
             </div>
           </div>
 
-          <div className="row">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
-              <textarea className={missingFields.includes('Effect') ? 'error' : ''} placeholder="Effect (full text shown on card)" value={effect} onChange={(e) => { setEffect(e.target.value); clearMissingField('Effect') }} />
-              {missingFields.includes('Effect') && formError && <div className="field-error">Effect is required</div>}
+          {type === 'Leveled' ? (
+            <>
+              <div className="row">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
+                  <textarea className={missingFields.includes('1st Level') ? 'error' : ''} placeholder="1st level" value={firstLevel} onChange={(e) => { setFirstLevel(e.target.value); clearMissingField('1st Level') }} />
+                  {missingFields.includes('1st Level') && formError && <div className="field-error">1st level is required</div>}
+                </div>
+              </div>
+
+              <div className="row">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
+                  <textarea placeholder="5th level (optional)" value={fifthLevel} onChange={(e) => setFifthLevel(e.target.value)} />
+                </div>
+              </div>
+
+              <div className="row">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
+                  <textarea placeholder="9th level (optional)" value={ninthLevel} onChange={(e) => setNinthLevel(e.target.value)} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="row">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
+                <textarea className={missingFields.includes('Effect') ? 'error' : ''} placeholder="Effect (full text shown on card)" value={effect} onChange={(e) => { setEffect(e.target.value); clearMissingField('Effect') }} />
+                {missingFields.includes('Effect') && formError && <div className="field-error">Effect is required</div>}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="row">
         {!showAbility ? (
@@ -380,7 +420,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
 
           {formError && <div style={{ color: '#f87171', margin: '6px 0' }}>{formError}</div>}
           <div className="row actions">
-            <button type="submit" className="chip-btn" disabled={!name.trim() || !description.trim() || !effect.trim() || abilityInvalid}>
+            <button type="submit" className="chip-btn" disabled={!name.trim() || !description.trim() || (type === 'Leveled' ? !firstLevel.trim() : !effect.trim()) || abilityInvalid}>
               Add to deck
             </button>
             <button type="button" className="chip-btn" onClick={reset}>

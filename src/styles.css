@@ -122,6 +122,12 @@ details summary{ cursor:pointer; color:var(--accent) }
 .custom-form-wrapper .chip-btn{ padding:0.2rem 0.5rem; font-size:0.9rem }
 .custom-form-collapsed{ padding:0.35rem 0.5rem; background: rgba(255,255,255,0.01); border-radius:6px; color:var(--muted); margin-top:8px }
 
+/* Drag & drop */
+.draggable-wrapper{ position: relative }
+.draggable-wrapper.dragging{ opacity: 0.5 }
+.draggable-wrapper.drag-over{ outline: 2px dashed rgba(96,165,250,0.5); border-radius:6px }
+
+
 
 
 /* Custom form */

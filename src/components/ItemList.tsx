@@ -75,6 +75,17 @@ export default function ItemList({
     })
   }
 
+  function moveItem(from: number, to: number) {
+    setDeck((d) => {
+      if (from < 0 || from >= d.length) return d
+      if (to < 0 || to >= d.length) return d
+      const next = [...d]
+      const [item] = next.splice(from, 1)
+      next.splice(to, 0, item)
+      return next
+    })
+  }
+
   function pickRandom() {
     if (!filtered || filtered.length === 0) return
     const idx = Math.floor(Math.random() * filtered.length)
@@ -246,7 +257,7 @@ export default function ItemList({
             <div className="print-deck-panel">
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} onMoveUp={moveUp} onMoveDown={moveDown} />
+                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} onMove={moveItem} />
                 </div>
 
                 <div style={{ width: 320 }}>

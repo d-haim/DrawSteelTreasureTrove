@@ -100,7 +100,7 @@ export default function ItemCard({
         <div className="card-actions">
           {!inDeck && onAddToDeck && (
             <button className="chip-btn" onClick={() => onAddToDeck(item)}>
-              Add to print deck
+              Add to deck
             </button>
           )}
 

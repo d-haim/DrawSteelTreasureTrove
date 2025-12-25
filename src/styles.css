@@ -161,8 +161,8 @@ details summary{ cursor:pointer; color:var(--accent) }
 /* Custom form */
 .custom-form{ background: rgba(255,255,255,0.02); padding:0.6rem; border-radius:6px; display:flex; flex-direction:column; gap:8px }
 .custom-form input, .custom-form select, .custom-form textarea{ background: transparent; border:1px solid rgba(255,255,255,0.03); padding:0.4rem; border-radius:6px; color:var(--fg); width:100%; box-sizing: border-box }
-.custom-form select{ background: rgba(255,255,255,0.03); color:var(--fg); -webkit-appearance:none; -moz-appearance:none; appearance:none; padding-right:1.8rem; background-repeat:no-repeat; background-position: calc(100% - 0.6rem) center; background-size: 0.9rem; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='%23e6eef8' d='M5 8l5 5 5-5z'/></svg>") }
-.custom-form select option{ color:var(--fg); background:transparent }
+.custom-form select{ background: rgba(85, 168, 141, 0.03); color:var(--fg); -webkit-appearance:none; -moz-appearance:none; appearance:none; padding-right:1.8rem; background-repeat:no-repeat; background-position: calc(100% - 0.6rem) center; background-size: 0.9rem; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='%23e6eef8' d='M5 8l5 5 5-5z'/></svg>") }
+.custom-form select option{ color:var(--fg); background-color: #071240 }
 .custom-form select::-ms-expand{ display:none }
 .custom-form textarea{ min-height:64px }
 .custom-form .row{ display:flex; gap:8px; align-items: center }

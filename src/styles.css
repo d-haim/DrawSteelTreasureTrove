@@ -97,6 +97,13 @@ details summary{ cursor:pointer; color:var(--accent) }
 .ability{ margin-top:8px; border-left:3px solid rgba(96,165,250,0.12); padding-left:10px }
 .ability h4{ margin:0 0 6px 0 }
 .ability-desc p{ margin:0 0 6px 0 }
+/* ability description text: italic + underline */
+.ability-desc, .ability > .desc, .ability > p.desc {
+  font-style: italic;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.ability .power-roll .pr-desc{ font-style: normal; text-decoration: none; text-underline-offset: initial; }
 
 /* Item-level power roll separation */
 .item-power-rolls{ margin-top:12px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.04) }

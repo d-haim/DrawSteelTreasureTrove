@@ -68,13 +68,24 @@ export default function PrintDeck({
             .print-card h3{ font-size:14px; margin-bottom:6px }
             .muted{ color:#666; font-size:0.9rem }
             .effect{ margin-top:8px }
-            .project{ margin-top:8px; font-size:0.9rem; color:#444 }
+            .project{ margin-top:8px; font-size:12px; color:#111; font-family: inherit; }
             .power-roll{ margin-top:6px }
             .power-roll .range{ display:inline; font-weight:700 }
             .power-roll .pr-desc{ display:inline-block }
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
             .item-power-rolls{ margin-top:8px; padding-top:6px }
             .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; line-height:1; color:#000 }
+            /* ability description text: italic + underline */
+            .ability > .meta { margin-bottom: 0.18em; }
+            /* reduce gap between ability name and description */
+            .ability h4{ margin: 0; margin-bottom: 0.08em; }
+            .ability-desc, .ability > .desc, .ability > p.desc {
+              font-style: italic;
+              text-decoration: underline;
+              text-underline-offset: 0.18em;
+            }
+            }
+            .ability .power-roll .pr-desc{ font-style: normal; text-decoration: none; text-underline-offset: initial; }
             @media print{
               @page{ margin:8mm }
               .power-roll.power-roll-header{ background: #f7f7f7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
@@ -86,10 +97,11 @@ export default function PrintDeck({
             ${deck
               .map((it) => `
               <div class="print-card">
-                <h3>
-                  ${escapeHtml(it.name)}
-                </h3>
-                <div class="muted">${escapeHtml(it.type)}</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <h3 style="margin:0;font-size:14px;">${escapeHtml(it.name)}</h3>
+                  <span class="muted" style="font-weight:bold;font-size:13px;">${escapeHtml(it.type)}</span>
+                </div>
+                ${(it.keywords && it.keywords.length > 0) ? `<div style="font-weight:bold;margin-bottom:0.2em">${escapeHtml(it.keywords.join(', '))}</div>` : ''}
                 <div class="desc">${replaceIntensityGlyphsHtml(escapeHtml((it as any).description || ''))}</div>
                 <div class="effect">${((it as any).first_level || (it as any).fifth_level || (it as any).ninth_level) ? `
                   ${ (it as any).first_level ? `<section><h4>1st level</h4>${formatPowerRollsHtml((it as any).first_level, true)}</section>` : ''}

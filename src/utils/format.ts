@@ -105,35 +105,31 @@ function prStringToHtml(line: string, forPrint = false) {
 }
 
 export function formatAbilityHtml(a: Ability, forPrint = false) {
-  const parts: string[] = []
-  parts.push(`<div class="ability"><h4>${escapeHtml(a.name)}</h4>`)
-  if (a.description) parts.push(formatPowerRollsHtml(a.description, forPrint))
+  const parts: string[] = [];
+  parts.push(`<div class="ability"><h4>${escapeHtml(a.name)}</h4>`);
+  if (a.description) parts.push(`<p class="desc ability-desc">${replaceIntensityGlyphsHtml(escapeHtml(a.description))}</p>`);
 
-  // Structured meta display (keywords/type/range/targets)
-  const metaLines: string[] = []
-  if (a.keywords && a.keywords.length) metaLines.push(`<div><strong>Keywords:</strong> ${escapeHtml(a.keywords.join(', '))}</div>`)
-  if (a.type) metaLines.push(`<div><strong>Type:</strong> ${escapeHtml(a.type)}</div>`)
-  if (a.range) metaLines.push(`<div><strong>Range:</strong> ${escapeHtml(a.range)}</div>`)
-  if (a.targets) metaLines.push(`<div><strong>Targets:</strong> ${escapeHtml(a.targets)}</div>`)
-
-  if (metaLines.length) {
-    parts.push('<div class="ability-meta">')
-    parts.push(metaLines.join(''))
-    parts.push('</div>')
+  // Keywords and type on one line
+  if ((a.keywords && a.keywords.length > 0) || a.type) {
+    parts.push(`<div style="display:flex;align-items:baseline;margin-top:-0.2em;margin-bottom:0.2em">${a.keywords && a.keywords.length > 0 ? `<span style="font-weight:bold">${escapeHtml(a.keywords.join(', '))}</span>` : ''}${a.type ? `<span style="font-weight:bold;margin-left:auto">${escapeHtml(a.type)}</span>` : ''}</div>`);
+  }
+  // Range and targets on next line
+  if (a.range || a.targets) {
+    parts.push(`<div style="display:flex;align-items:baseline;font-weight:normal;margin-bottom:0.5em">${a.range ? `<span><span class="ds-glyph">&#x0044;</span> ${escapeHtml(a.range)}</span>` : ''}${a.targets ? `<span style="margin-left:auto"><span class="ds-glyph">&#x0054;</span> ${escapeHtml(a.targets)}</span>` : ''}</div>`);
   }
 
   // Power rolls (string[]). Render above the ability effect.
   if (a.power_roll && a.power_roll.length > 0) {
-    parts.push('<div class="ability-prs">')
-    for (const line of a.power_roll) parts.push(prStringToHtml(line, forPrint))
-    parts.push('</div>')
+    parts.push('<div class="ability-prs">');
+    for (const line of a.power_roll) parts.push(prStringToHtml(line, forPrint));
+    parts.push('</div>');
   }
 
   // Effect paragraph (after power rolls)
-  if (a.effect) parts.push(formatPowerRollsHtml(a.effect, forPrint))
+  if (a.effect) parts.push(formatPowerRollsHtml(a.effect, forPrint));
 
-  parts.push('</div>')
-  return parts.join('')
+  parts.push('</div>');
+  return parts.join('');
 }
 
 export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined, forPrint = false) {

@@ -34,9 +34,7 @@ export default function LeveledCard({
             <h4>1st level</h4>
             <div className="effect">
               {parsePowerRolls(item.first_level).map((part, i) =>
-                part.type === 'plain' ? (
-                  <p key={i} dangerouslySetInnerHTML={toGlyphHtml(part.text)} />
-                ) : (
+                part.type === 'plain' ? null : (
                   <div className="power-roll" key={i}>
                     <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
@@ -51,9 +49,7 @@ export default function LeveledCard({
             <h4>5th level</h4>
             <div className="effect">
               {parsePowerRolls(item.fifth_level).map((part, i) =>
-                part.type === 'plain' ? (
-                  <p key={i} dangerouslySetInnerHTML={toGlyphHtml(part.text)} />
-                ) : (
+                part.type === 'plain' ? null : (
                   <div className="power-roll" key={i}>
                     <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
@@ -68,9 +64,7 @@ export default function LeveledCard({
             <h4>9th level</h4>
             <div className="effect">
               {parsePowerRolls(item.ninth_level).map((part, i) =>
-                part.type === 'plain' ? (
-                  <p key={i} dangerouslySetInnerHTML={toGlyphHtml(part.text)} />
-                ) : (
+                part.type === 'plain' ? null : (
                   <div className="power-roll" key={i}>
                     <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />

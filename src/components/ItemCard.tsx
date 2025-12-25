@@ -83,22 +83,37 @@ export default function ItemCard({
             {item.abilities && item.abilities.length > 0 && item.abilities.map((a, ai) => (
               <div className="ability" key={`ab-${ai}`}>
                 <h4>{a.name}</h4>
-                {a.description && parsePowerRolls(a.description).map((pp, j) => (
-                  pp.type === 'plain' ? (
-                    <p key={`ab-${ai}-d-${j}`} dangerouslySetInnerHTML={toGlyphHtml(pp.text)} />
-                  ) : (
-                    <div className="power-roll" key={`ab-${ai}-d-${j}`}>
-                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(pp.marker)}</span></span>{' '}
-                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(pp.desc)} />
-                    </div>
-                  )
+                {a.description && <p className="desc ability-desc" dangerouslySetInnerHTML={toGlyphHtml(a.description)} />}
+                {(a.keywords && a.keywords.length > 0 || a.type) && (
+                  <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '-0.2em', marginBottom: '0.2em' }}>
+                    {a.keywords && a.keywords.length > 0 && (
+                      <span style={{ fontWeight: 'bold' }}>{a.keywords.join(', ')}</span>
+                    )}
+                    {a.type && (
+                      <span style={{ fontWeight: 'bold', marginLeft: 'auto' }}>{a.type}</span>
+                    )}
+                  </div>
+                )}
+                {(a.range || a.targets) && (
+                  <div style={{ display: 'flex', alignItems: 'baseline', fontWeight: 'normal', marginBottom: '0.5em' }}>
+                    {a.range && (
+                      <span><span className="ds-glyph">{String.fromCharCode(0x0044)}</span> {a.range}</span>
+                    )}
+                    {a.targets && (
+                      <span style={{ marginLeft: 'auto' }}><span className="ds-glyph">{String.fromCharCode(0x0054)}</span> {a.targets}</span>
+                    )}
+                  </div>
+                )}
+                {a.description && parsePowerRolls(a.description).filter(pp => pp.type === 'pr').map((pp, j) => (
+                  <div className="power-roll" key={`ab-${ai}-d-${j}`}>
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(pp.marker)}</span></span>{' '}
+                    <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(pp.desc)} />
+                  </div>
                 ))}
 
+                {/* ability-meta now only shows other fields if needed */}
                 <div className="ability-meta">
-                  {a.keywords && a.keywords.length > 0 && <div><strong>Keywords:</strong> {a.keywords.join(', ')}</div>}
-                  {a.type && <div><strong>Type:</strong> {a.type}</div>}
-                  {a.range && <div><strong>Range:</strong> {a.range}</div>}
-                  {a.targets && <div><strong>Targets:</strong> {a.targets}</div>}
+                  {/* Add other meta fields here if needed */}
                 </div>
 
                 {/* ability power rolls (above ability effect) */}

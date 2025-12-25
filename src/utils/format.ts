@@ -103,10 +103,10 @@ function prStringToHtml(line: string, forPrint = false) {
   return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
 }
 
-export function formatAbilityHtml(a: Ability) {
+export function formatAbilityHtml(a: Ability, forPrint = false) {
   const parts: string[] = []
   parts.push(`<div class="ability"><h4>${escapeHtml(a.name)}</h4>`)
-  if (a.description) parts.push(formatPowerRollsHtml(a.description))
+  if (a.description) parts.push(formatPowerRollsHtml(a.description, forPrint))
 
   // Structured meta display (keywords/type/range/targets)
   const metaLines: string[] = []
@@ -124,20 +124,20 @@ export function formatAbilityHtml(a: Ability) {
   // Power rolls (string[]). Render above the ability effect.
   if (a.power_roll && a.power_roll.length > 0) {
     parts.push('<div class="ability-prs">')
-    for (const line of a.power_roll) parts.push(prStringToHtml(line))
+    for (const line of a.power_roll) parts.push(prStringToHtml(line, forPrint))
     parts.push('</div>')
   }
 
   // Effect paragraph (after power rolls)
-  if (a.effect) parts.push(formatPowerRollsHtml(a.effect))
+  if (a.effect) parts.push(formatPowerRollsHtml(a.effect, forPrint))
 
   parts.push('</div>')
   return parts.join('')
 }
 
-export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined) {
+export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined, forPrint = false) {
   if (!abilities || abilities.length === 0) return ''
-  return abilities.map((a) => formatAbilityHtml(a)).join('')
+  return abilities.map((a) => formatAbilityHtml(a, forPrint)).join('')
 }
 
 // Map a PR marker (<=11, 12-16, 17+) to a glyph codepoint from the DS Open Glyphs font

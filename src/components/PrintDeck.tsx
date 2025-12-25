@@ -72,7 +72,7 @@ export default function PrintDeck({
             .power-roll .range{ display:inline-flex; align-items:center; gap:0.25rem; font-weight:700; background:transparent; color:inherit; padding:0; border-radius:0 }
             .power-roll .pr-desc{ display:inline-block }
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
-            .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; margin-right:0.25rem; line-height:1; color:#fff }
+            .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; margin-right:0.25rem; line-height:1; color:#000 }
             @media print{
               body{ margin: 8mm; color:#111; font-size:12px }
               .print-grid{ gap:8px; grid-template-columns: repeat(2, minmax(220px, 1fr)); }
@@ -106,7 +106,7 @@ export default function PrintDeck({
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
                   if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim(), true)}</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
                   return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
-                }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities)}
+                }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities, true)}
                 </div>
                 ${includeProject && it.project ? `<div class="project"><strong>Project:</strong><div>Prerequisite: ${escapeHtml(it.project.prerequisite || '')}</div><div>Source: ${escapeHtml(it.project.source || '')}</div><div>Characteristics: ${escapeHtml((it.project.characteristics || []).join(', '))}</div><div>Goal: ${escapeHtml(it.project.goal || '')}</div></div>` : ''}
               </div>

@@ -89,7 +89,7 @@ details summary{ cursor:pointer; color:var(--accent) }
 
 /* power roll formatting */
 .power-roll{ margin-top:6px }
-.power-roll .range{ display:inline-flex; align-items:center; gap:0.25rem; font-weight:700; background:transparent; color:inherit; padding:0; border-radius:0 }
+.power-roll .range{ display:inline; font-weight:700 }
 .power-roll .pr-desc{ display:inline-block }
 .power-roll.power-roll-header{ background: rgba(255,255,255,0.02); padding:6px; border-radius:6px; font-weight:normal; display:block }
 
@@ -177,4 +177,4 @@ details summary{ cursor:pointer; color:var(--accent) }
 }
 
 /* DS glyph icon styling */
-.ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size: 1.25em; display:inline-block; width:auto; margin-right:0.25rem; line-height:1; color:#fff }
+.ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size: 1.25em; display:inline-block; width:auto; line-height:1; color:#fff }

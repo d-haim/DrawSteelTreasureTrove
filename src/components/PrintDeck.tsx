@@ -61,28 +61,21 @@ export default function PrintDeck({
               font-style: normal;
               font-display: swap;
             }
-            body{ font-family: Arial, Helvetica, sans-serif; margin:20px; color:#111 }
-            .print-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px }
-            .print-card{ border:1px solid #222; padding:12px; border-radius:6px; box-shadow: 0 1px 0 rgba(0,0,0,0.1); background:#fff; box-sizing:border-box }
-            .print-card h3{ margin:0 0 6px 0 }
+            /* Base styles mirror print for accurate preview */
+            body{ font-family: Arial, Helvetica, sans-serif; margin: 8mm; color:#111; font-size:12px }
+            .print-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; max-width: 210mm }
+            .print-card{ border:1px solid #ddd; padding:8px; border-radius:6px; box-shadow:none; background:#fff; box-sizing:border-box; font-size:12px }
+            .print-card h3{ font-size:14px; margin-bottom:6px }
             .muted{ color:#666; font-size:0.9rem }
             .effect{ margin-top:8px }
             .project{ margin-top:8px; font-size:0.9rem; color:#444 }
             .power-roll{ margin-top:6px }
-            .power-roll .range{ display:inline-flex; align-items:center; gap:0.25rem; font-weight:700; background:transparent; color:inherit; padding:0; border-radius:0 }
+            .power-roll .range{ display:inline; font-weight:700 }
             .power-roll .pr-desc{ display:inline-block }
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
-            .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; margin-right:0.25rem; line-height:1; color:#000 }
+            .item-power-rolls{ margin-top:8px; padding-top:6px }
+            .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; line-height:1; color:#000 }
             @media print{
-              body{ margin: 8mm; color:#111; font-size:12px }
-              .print-grid{ gap:8px; grid-template-columns: repeat(2, minmax(220px, 1fr)); }
-              .print-card{ padding:8px; font-size:12px; box-shadow:none; border:1px solid #ddd; background:#fff; page-break-inside:avoid; break-inside:avoid; }
-              .print-card h3{ font-size:14px; margin-bottom:6px }
-              .print-card section{ margin-top:6px }
-              .print-card section h4{ margin:4px 0 6px 0; font-size:13px }
-              .item-power-rolls{ margin-top:8px; padding-top:6px; border-top:1px dashed #ddd }
-              .power-roll .range{ width:64px }
-              .ds-glyph{ color:#000 }
               @page{ margin:8mm }
             }
           </style>

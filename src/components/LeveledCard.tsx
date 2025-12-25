@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Leveled, BaseItem } from '../types/items'
+import { parsePowerRolls } from '../utils/format'
 
 export default function LeveledCard({
   item,
@@ -29,19 +30,52 @@ export default function LeveledCard({
         {item.first_level && (
           <section>
             <h4>1st level</h4>
-            <p>{item.first_level}</p>
+            <div className="effect">
+              {parsePowerRolls(item.first_level).map((part, i) =>
+                part.type === 'plain' ? (
+                  <p key={i}>{part.text}</p>
+                ) : (
+                  <div className="power-roll" key={i}>
+                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="pr-desc">{part.desc}</span>
+                  </div>
+                )
+              )}
+            </div>
           </section>
         )}
         {item.fifth_level && (
           <section>
             <h4>5th level</h4>
-            <p>{item.fifth_level}</p>
+            <div className="effect">
+              {parsePowerRolls(item.fifth_level).map((part, i) =>
+                part.type === 'plain' ? (
+                  <p key={i}>{part.text}</p>
+                ) : (
+                  <div className="power-roll" key={i}>
+                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="pr-desc">{part.desc}</span>
+                  </div>
+                )
+              )}
+            </div>
           </section>
         )}
         {item.ninth_level && (
           <section>
             <h4>9th level</h4>
-            <p>{item.ninth_level}</p>
+            <div className="effect">
+              {parsePowerRolls(item.ninth_level).map((part, i) =>
+                part.type === 'plain' ? (
+                  <p key={i}>{part.text}</p>
+                ) : (
+                  <div className="power-roll" key={i}>
+                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="pr-desc">{part.desc}</span>
+                  </div>
+                )
+              )}
+            </div>
           </section>
         )}
       </div>

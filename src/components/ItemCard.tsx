@@ -1,5 +1,6 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
+import { parsePowerRolls } from '../utils/format'
 
 export default function ItemCard({
   item,
@@ -39,9 +40,20 @@ export default function ItemCard({
       {item.effect && (
         <details open={compact}>
           <summary className="summary">Effect</summary>
-          <p className="effect">{item.effect}</p>
+          <div className="effect">
+            {parsePowerRolls(item.effect).map((part, i) =>
+              part.type === 'plain' ? (
+                <p key={i}>{part.text}</p>
+              ) : (
+                <div className="power-roll" key={i}>
+                  <span className="range">{part.marker}:</span>{' '}
+                  <span className="pr-desc">{part.desc}</span>
+                </div>
+              )
+            )}
+          </div>
         </details>
-      )}
+      )} 
 
       {showProject && item.project && (
         <div className="project">

@@ -79,6 +79,12 @@ body{
 details summary{ cursor:pointer; color:var(--accent) }
 .leveled-levels section{ margin-top:0.5rem }
 
+/* power roll formatting */
+.power-roll{ margin-top:6px }
+.power-roll .range{ color:var(--accent); font-weight:700; display:inline-block; width:72px }
+.power-roll .pr-desc{ display:inline-block }
+
+
 /* Filters */
 .filters{ margin-bottom:1rem; display:flex; flex-direction:column; gap:0.5rem }
 .search{ padding:0.5rem 0.75rem; border-radius:6px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:var(--fg); width:100% }

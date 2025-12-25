@@ -1,6 +1,7 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
+import { formatPowerRollsHtml } from '../utils/format'
 
 export default function PrintDeck({
   deck,
@@ -26,8 +27,11 @@ export default function PrintDeck({
             .print-card{ border:1px solid #222; padding:12px; border-radius:6px; box-shadow: 0 1px 0 rgba(0,0,0,0.1); background:#fff }
             .print-card h3{ margin:0 0 6px 0 }
             .muted{ color:#666; font-size:0.9rem }
-            .effect{ white-space: pre-wrap; margin-top:8px }
+            .effect{ margin-top:8px }
             .project{ margin-top:8px; font-size:0.9rem; color:#444 }
+            .power-roll{ margin-top:6px }
+            .power-roll .range{ color: #2b6cb0; font-weight:700; display:inline-block; width:72px }
+            .power-roll .pr-desc{ display:inline-block }
             @media print{ body{ margin: 0 } .print-grid{ gap:8px } }
           </style>
         </head>
@@ -41,7 +45,7 @@ export default function PrintDeck({
                 </h3>
                 <div class="muted">${escapeHtml(it.type)}</div>
                 <div class="desc">${escapeHtml(it.description || '')}</div>
-                <div class="effect">${escapeHtml(it.effect || '')}</div>
+                <div class="effect">${formatPowerRollsHtml(it.effect || '')}</div>
                 ${includeProject && it.project ? `<div class="project"><strong>Project:</strong><div>Prereq: ${escapeHtml(it.project.prerequisite || '')}</div><div>Source: ${escapeHtml(it.project.source || '')}</div><div>Characteristics: ${escapeHtml((it.project.characteristics || []).join(', '))}</div><div>Goal: ${escapeHtml(it.project.goal || '')}</div></div>` : ''}
               </div>
             `)

@@ -20,6 +20,12 @@ export default function App() {
       <div className="disclaimer" style={{ marginTop: 18 }}>
         <p>Draw Steel Treasure Trove is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC.</p>
         <p>DRAW STEEL © 2024 MCDM Productions, LLC.</p>
+        <p>
+          Using the DS Open Glyphs font, created by MrMattDollar.{' '}
+          <a href="https://mrmattdollar.itch.io/draw-steel-symbols-font" target="_blank" rel="noopener noreferrer">
+            https://mrmattdollar.itch.io/draw-steel-symbols-font
+          </a>
+        </p>
       </div>
     </div>
   )

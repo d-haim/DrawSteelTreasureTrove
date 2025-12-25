@@ -52,6 +52,8 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
     if (!description.trim()) missing.push('Description')
     if (type === 'Leveled') {
       if (!firstLevel.trim()) missing.push('1st Level')
+      if (!fifthLevel.trim()) missing.push('5th Level')
+      if (!ninthLevel.trim()) missing.push('9th Level')
     } else {
       if (!effect.trim()) missing.push('Effect')
     }
@@ -275,13 +277,15 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
 
               <div className="row">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
-                  <textarea placeholder="5th level (optional)" value={fifthLevel} onChange={(e) => setFifthLevel(e.target.value)} />
+                  <textarea className={missingFields.includes('5th Level') ? 'error' : ''} placeholder="5th level" value={fifthLevel} onChange={(e) => { setFifthLevel(e.target.value); clearMissingField('5th Level') }} />
+                  {missingFields.includes('5th Level') && formError && <div className="field-error">5th level is required</div>}
                 </div>
               </div>
 
               <div className="row">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
-                  <textarea placeholder="9th level (optional)" value={ninthLevel} onChange={(e) => setNinthLevel(e.target.value)} />
+                  <textarea className={missingFields.includes('9th Level') ? 'error' : ''} placeholder="9th level" value={ninthLevel} onChange={(e) => { setNinthLevel(e.target.value); clearMissingField('9th Level') }} />
+                  {missingFields.includes('9th Level') && formError && <div className="field-error">9th level is required</div>}
                 </div>
               </div>
             </>
@@ -420,7 +424,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
 
           {formError && <div style={{ color: '#f87171', margin: '6px 0' }}>{formError}</div>}
           <div className="row actions">
-            <button type="submit" className="chip-btn" disabled={!name.trim() || !description.trim() || (type === 'Leveled' ? !firstLevel.trim() : !effect.trim()) || abilityInvalid}>
+            <button type="submit" className="chip-btn" disabled={!name.trim() || !description.trim() || (type === 'Leveled' ? (!firstLevel.trim() || !fifthLevel.trim() || !ninthLevel.trim()) : !effect.trim()) || abilityInvalid}>
               Add to deck
             </button>
             <button type="button" className="chip-btn" onClick={reset}>

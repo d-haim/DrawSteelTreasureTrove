@@ -179,16 +179,40 @@ export function markerToGlyphChar(marker: string) {
 export function replaceIntensityGlyphs(text: string): string {
   if (!text) return text
   return text
-    .replace(/I<WEAK/g, String.fromCharCode(parseInt('0078', 16)))
-    .replace(/I<AVERAGE/g, String.fromCharCode(parseInt('0079', 16)))
-    .replace(/I<STRONG/g, String.fromCharCode(parseInt('007A', 16)))
+    .replace(/I<WEAK/g, String.fromCharCode(0x0049) + String.fromCharCode(0x0078))
+    .replace(/I<AVERAGE/g, String.fromCharCode(0x0049) + String.fromCharCode(0x0079))
+    .replace(/I<STRONG/g, String.fromCharCode(0x0049) + String.fromCharCode(0x007A))
+    .replace(/M<WEAK/g, String.fromCharCode(0x004D) + String.fromCharCode(0x0078))
+    .replace(/M<AVERAGE/g, String.fromCharCode(0x004D) + String.fromCharCode(0x0079))
+    .replace(/M<STRONG/g, String.fromCharCode(0x004D) + String.fromCharCode(0x007A))
+    .replace(/P<WEAK/g, String.fromCharCode(0x0050) + String.fromCharCode(0x0078))
+    .replace(/P<AVERAGE/g, String.fromCharCode(0x0050) + String.fromCharCode(0x0079))
+    .replace(/P<STRONG/g, String.fromCharCode(0x0050) + String.fromCharCode(0x007A))
+    .replace(/R<WEAK/g, String.fromCharCode(0x0052) + String.fromCharCode(0x0078))
+    .replace(/R<AVERAGE/g, String.fromCharCode(0x0052) + String.fromCharCode(0x0079))
+    .replace(/R<STRONG/g, String.fromCharCode(0x0052) + String.fromCharCode(0x007A))
+    .replace(/A<WEAK/g, String.fromCharCode(0x0041) + String.fromCharCode(0x0078))
+    .replace(/A<AVERAGE/g, String.fromCharCode(0x0041) + String.fromCharCode(0x0079))
+    .replace(/A<STRONG/g, String.fromCharCode(0x0041) + String.fromCharCode(0x007A))
 }
 
 export function replaceIntensityGlyphsHtml(text: string): string {
   if (!text) return text
   return text
-    .replace(/I<WEAK/g, '<span class="ds-glyph">&#x0078;</span>')
-    .replace(/I<AVERAGE/g, '<span class="ds-glyph">&#x0079;</span>')
-    .replace(/I<STRONG/g, '<span class="ds-glyph">&#x007A;</span>')
+    .replace(/I<WEAK/g, '<span class="ds-glyph">&#x0049;&#x0078;</span>')
+    .replace(/I<AVERAGE/g, '<span class="ds-glyph">&#x0049;&#x0079;</span>')
+    .replace(/I<STRONG/g, '<span class="ds-glyph">&#x0049;&#x007A;</span>')
+    .replace(/M<WEAK/g, '<span class="ds-glyph">&#x004D;&#x0078;</span>')
+    .replace(/M<AVERAGE/g, '<span class="ds-glyph">&#x004D;&#x0079;</span>')
+    .replace(/M<STRONG/g, '<span class="ds-glyph">&#x004D;&#x007A;</span>')
+    .replace(/P<WEAK/g, '<span class="ds-glyph">&#x0050;&#x0078;</span>')
+    .replace(/P<AVERAGE/g, '<span class="ds-glyph">&#x0050;&#x0079;</span>')
+    .replace(/P<STRONG/g, '<span class="ds-glyph">&#x0050;&#x007A;</span>')
+    .replace(/R<WEAK/g, '<span class="ds-glyph">&#x0052;&#x0078;</span>')
+    .replace(/R<AVERAGE/g, '<span class="ds-glyph">&#x0052;&#x0079;</span>')
+    .replace(/R<STRONG/g, '<span class="ds-glyph">&#x0052;&#x007A;</span>')
+    .replace(/A<WEAK/g, '<span class="ds-glyph">&#x0041;&#x0078;</span>')
+    .replace(/A<AVERAGE/g, '<span class="ds-glyph">&#x0041;&#x0079;</span>')
+    .replace(/A<STRONG/g, '<span class="ds-glyph">&#x0041;&#x007A;</span>')
 }
 

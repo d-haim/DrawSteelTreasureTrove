@@ -8,7 +8,7 @@ export default function App() {
   return (
     <div className="app">
       <h1>Draw Steel — Treasure Trove</h1>
-      <p>Below are the items imported from the local JSON files.</p>
+      <p>Create a printable deck of treasure cards for Draw Steel TTRPG.</p>
 
       <ItemList consumables={consumables} trinkets={trinkets} leveled={leveled} />
     </div>

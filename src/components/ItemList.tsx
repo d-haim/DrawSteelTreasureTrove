@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
 import PrintDeck from './PrintDeck'
+import CustomCardForm from './CustomCardForm'
 import type { Consumable, Trinket, Leveled, BaseItem } from '../types/items'
 
 function textMatch(item: BaseItem, q: string) {
@@ -219,7 +220,15 @@ export default function ItemList({
           {/* PrintDeck */}
           <div style={{ marginTop: 10 }}>
             <div className="print-deck-panel">
-              <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} />
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ flex: 1 }}>
+                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} />
+                </div>
+
+                <div style={{ width: 320 }}>
+                  <CustomCardForm onCreate={(item) => addToDeck({ ...item, __category: 'Custom' })} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

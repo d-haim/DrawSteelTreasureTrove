@@ -63,7 +63,7 @@ export default function PrintDeck({
             }
             /* Base styles mirror print for accurate preview */
             body{ font-family: Arial, Helvetica, sans-serif; margin: 8mm; color:#111; font-size:12px }
-            .print-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; max-width: 210mm }
+            .print-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; width: 194mm }
             .print-card{ border:1px solid #ddd; padding:8px; border-radius:6px; box-shadow:none; background:#fff; box-sizing:border-box; font-size:12px }
             .print-card h3{ font-size:14px; margin-bottom:6px }
             .muted{ color:#666; font-size:0.9rem }
@@ -77,6 +77,7 @@ export default function PrintDeck({
             .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; line-height:1; color:#000 }
             @media print{
               @page{ margin:8mm }
+              .power-roll.power-roll-header{ background: #f7f7f7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
             }
           </style>
         </head>

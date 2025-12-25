@@ -6,7 +6,7 @@
       "Light Armor",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This suit is shaped of tough leather and set with thousands of tiny barbs on the inside, all thankfully pain-free to the touch.",
     "project": {
       "prerequisite": "Five rabid honey badger pelts, the quills of a hedgehog",
@@ -28,7 +28,7 @@
       "Heavy Armor",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This set of heavy chain mail is created to allow free movement in extreme environments without sacrificing protection.",
     "project": {
       "prerequisite": "A set of wings from a flying carp, a set of chain mail rusted by seawater",
@@ -51,7 +51,7 @@
       "Magic",
       "Medium Armor"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "The blue-purple carapace and wings of a gigantic scarab beetle have been formed into an ornate breastplate.",
     "project": {
       "prerequisite": "A giant scarab beetle carapace",
@@ -74,7 +74,7 @@
       "Magic",
       "Shield"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "A sunmetal kite shield bears the face of a lion on its front, its mouth opening wider over the course of battle.",
     "project": {
       "prerequisite": "A ballad of heroism, two ingots of sunmetal",
@@ -97,7 +97,7 @@
       "Medium Armor",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "Each scale of this iridescent armor shimmers with the faint image of a frozen moment of time.",
     "project": {
       "prerequisite": "The eyes of a time raider who died valiantly in battle",
@@ -119,7 +119,7 @@
       "Light Armor",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This delicate robe is made from thousands of pages torn from books, intricately folded together without a single thread to bind them.",
     "project": {
       "prerequisite": "Ten pages from each of a hundred different books",
@@ -142,7 +142,7 @@
       "Light Armor",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This midnight-dark leather coat is embossed with fractal patterns that appear different each time they are observed.",
     "project": {
       "prerequisite": "The will of a deceased person with no heirs",
@@ -164,7 +164,7 @@
       "Heavy Armor",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This heavy mechanized plate armor of gnomish make is designed to create its own cover on the battlefield.",
     "project": {
       "prerequisite": "Ten steel gears from an ancient construct",
@@ -187,7 +187,7 @@
       "Heavy Armor",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "Shimmering light flows like liquid along this suit of crystalline armor.",
     "project": {
       "prerequisite": "A large vessel of astral ice, a pint of supercooled mercury",
@@ -210,7 +210,7 @@
       "Psionic",
       "Shield"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "An unseen force seems to draw this steel shield toward nearby creatures.",
     "project": {
       "prerequisite": "Three ingots of steel, six crystals that resonate with psionic power",
@@ -233,7 +233,7 @@
       "Implement",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "An ornate ring is set with a large diamond that swirls with blue light, and whose inner surface is etched with protective runes.",
     "project": {
       "prerequisite": "A diamond ring",
@@ -256,7 +256,7 @@
       "Psionic",
       "Wand"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This crystal wand thrums with power, yet is so thin and brittle that it feels as if even a slight squeeze will shatter it.",
     "project": {
       "prerequisite": "A handful of shattered quartz",
@@ -279,7 +279,7 @@
       "Implement",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "A perfectly clear sphere is embossed with fine ivory and crystal that is frigid to the touch.",
     "project": {
       "prerequisite": "An ounce of primordial ice, an ounce of mammoth- ivory shards",
@@ -302,7 +302,7 @@
       "Implement",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This bronze bottle has been shaped into the form of a ghostly figure.",
     "project": {
       "prerequisite": "Incense distilled from the essence of ether",
@@ -324,7 +324,7 @@
       "Implement",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "These spectacles feature pink-tinted glass lenses held in a silver frame.",
     "project": {
       "prerequisite": "Two clear lenses carved from volcanic glass",
@@ -346,7 +346,7 @@
       "Implement",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This ornate high elf tome seems to sigh each time it is opened.",
     "project": {
       "prerequisite": "Written permission from a high elf magistrate",
@@ -368,7 +368,7 @@
       "Psionic",
       "Whip"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This long, sinuous chain is composed entirely of broken links held together by unseen power.",
     "project": {
       "prerequisite": "A lash used to punish a mutineer",
@@ -391,7 +391,7 @@
       "Magic",
       "Medium Weapon"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This crystal blade houses a stormy vortex of fire, ice, and lightning.",
     "project": {
       "prerequisite": "A ruby hardened in the fires of the City of Brass, a sapphire that has been struck by lightning",
@@ -414,7 +414,7 @@
       "Light Weapon",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "Despite sporting an outrageously ornate hilt adorned with far too many jewels, this blade remains perfectly balanced.",
     "project": {
       "prerequisite": "A personal blessing from the greatest duelist in the land, six fake and extremely shiny gemstones",
@@ -437,7 +437,7 @@
       "Medium Weapon",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This crystal battleaxe seems to pull at the hands that wield it, as if anxious to leap across the battlefield.",
     "project": {
       "prerequisite": "An ancient bronze gear covered in indecipherable runes",
@@ -459,7 +459,7 @@
       "Heavy Weapon",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This blade exudes a faint hum that grows louder as its quarry weakens.",
     "project": {
       "prerequisite": "The skull of a convicted criminal",
@@ -482,7 +482,7 @@
       "Heavy Weapon",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "The head of this iron hammer is cold to the touch and encases whatever it strikes in a thin layer of ice.",
     "project": {
       "prerequisite": "Eight iron bars cooled in a glacier, the branch of an ancient evergreen",
@@ -505,7 +505,7 @@
       "Light Weapon",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This ivory dagger features nine faintly glowing indentations along the blade.",
     "project": {
       "prerequisite": "Eighteen daggers—nine taken from personal enemies and nine gifted by friends",
@@ -527,7 +527,7 @@
       "Magic",
       "Polearm"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This needlelike lance is cast of shimmering metal and induces a yearning for the skies in those who handle it.",
     "project": {
       "prerequisite": "Night-blooming flower petals, a starmetal meteorite",
@@ -549,7 +549,7 @@
       "Magic",
       "Net"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This flexible black-iron net burns with the heat of a volcano.",
     "project": {
       "prerequisite": "Four iron bars coated in magma slag",
@@ -572,7 +572,7 @@
       "Bow",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This mechanized bow is set with magical reservoirs that carry the faint tang of toxins.",
     "project": {
       "prerequisite": "A venom sac from a giant spider, one valok gyroscope",
@@ -595,7 +595,7 @@
       "Magic",
       "Whip"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This sinuous whip reflects all light off its plated steel surfaces.",
     "project": {
       "prerequisite": "One hundred steel arrowheads stained with blood",
@@ -618,7 +618,7 @@
       "Bow",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "The shifting patterns on this bow’s crystalline grip resemble dozens of blinking eyes.",
     "project": {
       "prerequisite": "Heart strings of a tapir, a pound of tiger’s eye gemstones",
@@ -640,7 +640,7 @@
       "Magic",
       "Medium Weapon"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This bident is made from two pieces of moon metal twisted together, and hums like a tuning fork.",
     "project": {
       "prerequisite": "A jar of captured thunder, two ingots of moon metal",
@@ -663,7 +663,7 @@
       "Polearm",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "When first held, this naginata whispers the names of its past victims.",
     "project": {
       "prerequisite": "A folded metal blade infused with blood",
@@ -686,7 +686,7 @@
       "Magic",
       "Ring"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This ring appears to be traced by dried blood, which returns each time it is rubbed away.",
     "project": {
       "prerequisite": "A pair of obituaries that each mention the subject of the other",
@@ -709,7 +709,7 @@
       "Hands",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "These rough hand wraps are stained with blood that never comes clean.",
     "project": {
       "prerequisite": "One cotton bolt soaked in the blood of six adventurers",
@@ -732,7 +732,7 @@
       "Feet",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "Sparks strike from these boots whenever they touch the ground, increasing in number as the wearer gathers speed.",
     "project": {
       "prerequisite": "One jar of lightning",
@@ -755,7 +755,7 @@
       "Neck",
       "Magic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "When first handled, this tattered cloak fills the mind with thoughts of revenge.",
     "project": {
       "prerequisite": "A cloak worn by a murdered monarch",
@@ -778,7 +778,7 @@
       "Neck",
       "Psionic"
     ],
-    "source": "Draw Steel Herose",
+    "source": "Draw Steel Heroes",
     "description": "This burnished copper torque thrums with a sense of judgment.",
     "project": {
       "prerequisite": "A pound of feathers, a pound of bricks from the Seven Cities of Hell",

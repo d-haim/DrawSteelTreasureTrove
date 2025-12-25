@@ -83,6 +83,15 @@ details summary{ cursor:pointer; color:var(--accent) }
 .power-roll{ margin-top:6px }
 .power-roll .range{ color:var(--accent); font-weight:700; display:inline-block; width:72px }
 .power-roll .pr-desc{ display:inline-block }
+.power-roll.power-roll-header{ background: rgba(255,255,255,0.02); padding:6px; border-radius:6px; font-weight:normal; display:block }
+
+/* ability formatting */
+.ability{ margin-top:8px; border-left:3px solid rgba(96,165,250,0.12); padding-left:10px }
+.ability h4{ margin:0 0 6px 0 }
+.ability-desc p{ margin:0 0 6px 0 }
+.ability-meta{ background: rgba(255,255,255,0.02); padding:6px; border-radius:6px; margin-top:6px; white-space:normal; font-size:0.9rem; display:flex; flex-direction:column; gap:4px }
+.ability-meta div strong{ display:inline-block; width:84px }
+.ability-meta pre{ margin:0; background:transparent; font-family:monospace }
 
 
 /* Filters */

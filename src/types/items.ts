@@ -7,6 +7,19 @@ export interface Project {
   goal?: string
 }
 
+export type PowerRoll = { marker: string; desc: string }
+
+export interface Ability {
+  name: string
+  description?: string
+  keywords?: string[]
+  type?: string
+  range?: string
+  targets?: string
+  effect?: string
+  power_roll?: string[]
+}
+
 export interface BaseItem {
   name: string
   type: string
@@ -15,6 +28,8 @@ export interface BaseItem {
   keywords?: string[]
   description?: string
   effect?: string
+  abilities?: Ability[]
+  power_roll?: string[]
   project?: Project
 }
 

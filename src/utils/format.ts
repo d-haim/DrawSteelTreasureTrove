@@ -82,4 +82,61 @@ export function formatPowerRollsHtml(text: string) {
   return result
 }
 
+// Structured ability formatting helpers
+import type { Ability, PowerRoll } from '../types/items'
+
+function prStringToHtml(line: string) {
+  // Header detection: lines that start with 'Power Roll' (case-insensitive)
+  if (/^\s*Power\s+Roll\b/i.test(line)) {
+    return `<div class="power-roll power-roll-header">${escapeHtml(line.trim())}</div>`
+  }
+
+  // Extract marker (<=11, 12-16, 17+) at start if present, accept optional punctuation after marker
+  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
+  if (m) {
+    const marker = m[1].trim()
+    const desc = m[2].trim()
+    return `<div class="power-roll"><span class="range">${escapeHtml(marker)}:</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
+  }
+
+  // fallback: treat as single-line PR header/desc
+  return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
+}
+
+export function formatAbilityHtml(a: Ability) {
+  const parts: string[] = []
+  parts.push(`<div class="ability"><h4>${escapeHtml(a.name)}</h4>`)
+  if (a.description) parts.push(formatPowerRollsHtml(a.description))
+
+  // Structured meta display (keywords/type/range/targets)
+  const metaLines: string[] = []
+  if (a.keywords && a.keywords.length) metaLines.push(`<div><strong>Keywords:</strong> ${escapeHtml(a.keywords.join(', '))}</div>`)
+  if (a.type) metaLines.push(`<div><strong>Type:</strong> ${escapeHtml(a.type)}</div>`)
+  if (a.range) metaLines.push(`<div><strong>Range:</strong> ${escapeHtml(a.range)}</div>`)
+  if (a.targets) metaLines.push(`<div><strong>Targets:</strong> ${escapeHtml(a.targets)}</div>`)
+
+  if (metaLines.length) {
+    parts.push('<div class="ability-meta">')
+    parts.push(metaLines.join(''))
+    parts.push('</div>')
+  }
+
+  // Power rolls (string[]). Render above the ability effect.
+  if (a.power_roll && a.power_roll.length > 0) {
+    parts.push('<div class="ability-prs">')
+    for (const line of a.power_roll) parts.push(prStringToHtml(line))
+    parts.push('</div>')
+  }
+
+  // Effect paragraph (after power rolls)
+  if (a.effect) parts.push(formatPowerRollsHtml(a.effect))
+
+  parts.push('</div>')
+  return parts.join('')
+}
+
+export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined) {
+  if (!abilities || abilities.length === 0) return ''
+  return abilities.map((a) => formatAbilityHtml(a)).join('')
+}
 

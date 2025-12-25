@@ -7,6 +7,8 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
   const [echelon, setEchelon] = useState('')
   const [description, setDescription] = useState('')
   const [effect, setEffect] = useState('')
+  const [abilitiesJson, setAbilitiesJson] = useState('')
+  const [powerRollsJson, setPowerRollsJson] = useState('')
   const [prerequisite, setPrerequisite] = useState('')
   const [source, setSource] = useState('')
   const [characteristics, setCharacteristics] = useState('')
@@ -24,12 +26,35 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
         }
       : undefined
 
+    let abilities
+    if (abilitiesJson.trim()) {
+      try {
+        const parsed = JSON.parse(abilitiesJson)
+        if (Array.isArray(parsed)) abilities = parsed
+      } catch (e) {
+        // ignore invalid json
+        abilities = undefined
+      }
+    }
+
+    let power_roll
+    if (powerRollsJson.trim()) {
+      try {
+        const parsed = JSON.parse(powerRollsJson)
+        if (Array.isArray(parsed)) power_roll = parsed
+      } catch (e) {
+        power_roll = undefined
+      }
+    }
+
     const item: BaseItem = {
       name: name.trim(),
       type: type || 'Custom',
       echelon: echelon || undefined,
       description: description || undefined,
       effect: effect || undefined,
+      abilities: abilities || undefined,
+      power_roll: power_roll || undefined,
       project
     }
 
@@ -71,6 +96,14 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
 
       <div className="row">
         <textarea placeholder="Effect (full text shown on card)" value={effect} onChange={(e) => setEffect(e.target.value)} />
+      </div>
+
+      <div className="row">
+        <textarea placeholder={"Abilities (optional) — paste JSON array of {name,description,keywords,type,range,targets,effect,power_rolls}"} value={abilitiesJson} onChange={(e) => setAbilitiesJson(e.target.value)} />
+      </div>
+
+      <div className="row">
+        <textarea placeholder={"Power Rolls (optional) — paste JSON array of {marker, desc}"} value={powerRollsJson} onChange={(e) => setPowerRollsJson(e.target.value)} />
       </div>
 
       <div className="row">

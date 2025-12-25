@@ -1,7 +1,7 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
-import { formatPowerRollsHtml } from '../utils/format'
+import { formatPowerRollsHtml, formatAbilitiesHtmlStructured } from '../utils/format'
 
 export default function PrintDeck({
   deck,
@@ -32,6 +32,7 @@ export default function PrintDeck({
             .power-roll{ margin-top:6px }
             .power-roll .range{ color: #2b6cb0; font-weight:700; display:inline-block; width:72px }
             .power-roll .pr-desc{ display:inline-block }
+            .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
             @media print{ body{ margin: 0 } .print-grid{ gap:8px } }
           </style>
         </head>
@@ -45,7 +46,13 @@ export default function PrintDeck({
                 </h3>
                 <div class="muted">${escapeHtml(it.type)}</div>
                 <div class="desc">${escapeHtml(it.description || '')}</div>
-                <div class="effect">${formatPowerRollsHtml(it.effect || '')}</div>
+                <div class="effect">${formatPowerRollsHtml(it.effect || '')}${it.power_roll && it.power_roll.length ? it.power_roll.map(line => {
+                  if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
+                  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
+                  if (m) return `<div class="power-roll"><span class="range">${escapeHtml(m[1].trim())}:</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
+                  return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
+                }).join('') : ''}${formatAbilitiesHtmlStructured(it.abilities)}
+                </div>
                 ${includeProject && it.project ? `<div class="project"><strong>Project:</strong><div>Prereq: ${escapeHtml(it.project.prerequisite || '')}</div><div>Source: ${escapeHtml(it.project.source || '')}</div><div>Characteristics: ${escapeHtml((it.project.characteristics || []).join(', '))}</div><div>Goal: ${escapeHtml(it.project.goal || '')}</div></div>` : ''}
               </div>
             `)

@@ -9,15 +9,13 @@ export default function PrintDeck({
   onRemove,
   onClear,
   includeProject,
-  onMoveUp,
-  onMoveDown
+  onMove
 }: {
   deck: (BaseItem & { __category?: string })[]
   onRemove: (item: BaseItem) => void
   onClear: () => void
   includeProject: boolean
-  onMoveUp?: (item: BaseItem) => void
-  onMoveDown?: (item: BaseItem) => void
+  onMove?: (from: number, to: number) => void
 }) {
   const [collapsed, setCollapsed] = useState(true)
 
@@ -144,18 +142,39 @@ export default function PrintDeck({
       ) : (
         <div className="grid print-deck-grid" style={{ marginTop: 8 }}>
           {deck.map((it, idx) => (
-            <div key={`${it.type}:${it.name}`} style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 6 }}>
-                <button className="chip-btn" onClick={() => onMoveUp && onMoveUp(it)} disabled={!onMoveUp || idx === 0} title="Move up">
-                  ▲
-                </button>
-                <button className="chip-btn" onClick={() => onMoveDown && onMoveDown(it)} disabled={!onMoveDown || idx === deck.length - 1} title="Move down">
-                  ▼
-                </button>
-                <button className="chip-btn" onClick={() => onRemove(it)} title="Remove">
-                  ✕
-                </button>
-              </div>
+            <div
+              key={`${it.type}:${it.name}`}
+              className={`draggable-wrapper`}
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData('text/plain', String(idx))
+                e.dataTransfer.effectAllowed = 'move'
+                e.currentTarget.classList.add('dragging')
+              }}
+              onDragOver={(e) => {
+                e.preventDefault()
+                e.dataTransfer.dropEffect = 'move'
+                e.currentTarget.classList.add('drag-over')
+              }}
+              onDragLeave={(e) => {
+                e.currentTarget.classList.remove('drag-over')
+              }}
+              onDrop={(e) => {
+                e.preventDefault()
+                const from = Number(e.dataTransfer.getData('text/plain'))
+                const to = idx
+                e.currentTarget.classList.remove('drag-over')
+                const wrappers = document.querySelectorAll('.draggable-wrapper')
+                wrappers.forEach((w) => w.classList.remove('dragging'))
+                ;(onMove as any)?.(from, to)
+              }}
+              onDragEnd={(e) => {
+                const wrappers = document.querySelectorAll('.draggable-wrapper')
+                wrappers.forEach((w) => w.classList.remove('dragging'))
+                wrappers.forEach((w) => w.classList.remove('drag-over'))
+              }}
+            >
+
               {(it as any).__category === 'Leveled' || (it as any).first_level ? (
                 <LeveledCard item={it as any} compact={true} showProject={includeProject} onRemoveFromDeck={onRemove} inDeck={true} />
               ) : (

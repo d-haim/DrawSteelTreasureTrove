@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Leveled, BaseItem } from '../types/items'
-import { parsePowerRolls } from '../utils/format'
+import { parsePowerRolls, markerToGlyphChar } from '../utils/format'
 
 export default function LeveledCard({
   item,
@@ -36,7 +36,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )
@@ -53,7 +53,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )
@@ -70,7 +70,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range">{part.marker}:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )

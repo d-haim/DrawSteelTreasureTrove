@@ -76,7 +76,7 @@ export function formatPowerRollsHtml(text: string) {
     let desc = text.slice(start, end).trim()
     desc = desc.replace(/^[:\-\s]+/, '')
 
-    result += `<div class="power-roll"><span class="range">${escapeHtml(marker)}:</span> <span class="pr-desc">${esc(desc)}</span></div>`
+    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}:</span> <span class="pr-desc">${esc(desc)}</span></div>`
   }
 
   return result
@@ -96,7 +96,7 @@ function prStringToHtml(line: string) {
   if (m) {
     const marker = m[1].trim()
     const desc = m[2].trim()
-    return `<div class="power-roll"><span class="range">${escapeHtml(marker)}:</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
+    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}:</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
   }
 
   // fallback: treat as single-line PR header/desc
@@ -138,5 +138,22 @@ export function formatAbilityHtml(a: Ability) {
 export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined) {
   if (!abilities || abilities.length === 0) return ''
   return abilities.map((a) => formatAbilityHtml(a)).join('')
+}
+
+// Map a PR marker (<=11, 12-16, 17+) to a glyph codepoint from the DS Open Glyphs font
+export function markerToGlyphHtml(marker: string) {
+  const m = marker.trim()
+  if (/^<=/.test(m)) return `<span class="ds-glyph">&#x005B;</span>` // <=11 -> U+005B
+  if (/^\d+\s*-\s*\d+/.test(m)) return `<span class="ds-glyph">&#x002D;</span>` // 12-16 -> U+002D
+  if (/^\d+\+/.test(m)) return `<span class="ds-glyph">&#x005D;</span>` // 17+ -> U+005D
+  return escapeHtml(marker)
+}
+
+export function markerToGlyphChar(marker: string) {
+  const m = marker.trim()
+  if (/^<=/.test(m)) return String.fromCharCode(parseInt('005B', 16))
+  if (/^\d+\s*-\s*\d+/.test(m)) return String.fromCharCode(parseInt('002D', 16))
+  if (/^\d+\+/.test(m)) return String.fromCharCode(parseInt('005D', 16))
+  return marker
 }
 

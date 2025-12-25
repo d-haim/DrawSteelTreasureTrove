@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
-import { formatPowerRollsHtml, formatAbilitiesHtmlStructured } from '../utils/format'
+import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml } from '../utils/format'
 
 export default function PrintDeck({
   deck,
@@ -95,7 +95,7 @@ export default function PrintDeck({
                 ` : `${formatPowerRollsHtml((it as any).effect || '')}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-                  if (m) return `<div class="power-roll"><span class="range">${escapeHtml(m[1].trim())}:</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
+                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim())}:</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
                   return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
                 }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities)}
                 </div>

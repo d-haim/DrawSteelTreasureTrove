@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
-import { parsePowerRolls } from '../utils/format'
+import { parsePowerRolls, markerToGlyphChar } from '../utils/format'
 
 export default function ItemCard({
   item,
@@ -53,7 +53,7 @@ export default function ItemCard({
                   // header (bold in item card)
                   if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`pr-${i}`}><strong>{line.trim()}</strong></div>)
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-                  if (m) return (<div className="power-roll" key={`pr-${i}`}><span className="range">{m[1].trim()}:</span> <span className="pr-desc">{m[2].trim()}</span></div>)
+                  if (m) return (<div className="power-roll" key={`pr-${i}`}><span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span>:</span> <span className="pr-desc">{m[2].trim()}</span></div>)
                   return (<div className="power-roll" key={`pr-${i}`}><span className="pr-desc">{line.trim()}</span></div>)
                 })}
               </div>

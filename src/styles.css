@@ -1,3 +1,11 @@
+@font-face{
+  font-family: 'DS Open Glyphs';
+  src: url('/DS%20Open%20Glyphs%201.75%20Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root{
   --bg: #0f172a;
   --fg: #e6eef8;
@@ -167,3 +175,6 @@ details summary{ cursor:pointer; color:var(--accent) }
   /* ensure the on-screen disclaimer is visible in print if present */
   .disclaimer{ color:#666; font-size:12px; margin-top:16px }
 }
+
+/* DS glyph icon styling */
+.ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size: 1.05em; display:inline-block; width:64px; text-align:center; color:var(--accent); line-height:1 }

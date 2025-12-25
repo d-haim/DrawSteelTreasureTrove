@@ -76,7 +76,7 @@ export function formatPowerRollsHtml(text: string) {
     let desc = text.slice(start, end).trim()
     desc = desc.replace(/^[:\-\s]+/, '')
 
-    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}:</span> <span class="pr-desc">${esc(desc)}</span></div>`
+    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}</span> <span class="pr-desc">${esc(desc)}</span></div>`
   }
 
   return result
@@ -96,7 +96,7 @@ function prStringToHtml(line: string) {
   if (m) {
     const marker = m[1].trim()
     const desc = m[2].trim()
-    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}:</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
+    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
   }
 
   // fallback: treat as single-line PR header/desc

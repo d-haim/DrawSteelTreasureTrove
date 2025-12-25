@@ -54,6 +54,13 @@ export default function PrintDeck({
           <meta charset="utf-8" />
           <title>Deck</title>
           <style>
+            @font-face{
+              font-family: 'DS Open Glyphs';
+              src: url('/DS%20Open%20Glyphs%201.75%20Regular.ttf') format('truetype');
+              font-weight: normal;
+              font-style: normal;
+              font-display: swap;
+            }
             body{ font-family: Arial, Helvetica, sans-serif; margin:20px; color:#111 }
             .print-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px }
             .print-card{ border:1px solid #222; padding:12px; border-radius:6px; box-shadow: 0 1px 0 rgba(0,0,0,0.1); background:#fff; box-sizing:border-box }
@@ -62,9 +69,10 @@ export default function PrintDeck({
             .effect{ margin-top:8px }
             .project{ margin-top:8px; font-size:0.9rem; color:#444 }
             .power-roll{ margin-top:6px }
-            .power-roll .range{ color: #2b6cb0; font-weight:700; display:inline-block; width:72px }
+            .power-roll .range{ display:inline-flex; align-items:center; gap:0.25rem; font-weight:700; background:#2b6cb0; color:#fff; padding:2px 6px; border-radius:4px }
             .power-roll .pr-desc{ display:inline-block }
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
+            .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1em; display:inline-block; width:auto; margin-right:0.25rem; line-height:1; color:#fff }
             @media print{
               body{ margin: 8mm; color:#111; font-size:12px }
               .print-grid{ gap:8px; grid-template-columns: repeat(2, minmax(220px, 1fr)); }
@@ -95,7 +103,7 @@ export default function PrintDeck({
                 ` : `${formatPowerRollsHtml((it as any).effect || '')}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim())}:</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
+                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim())}</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
                   return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
                 }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities)}
                 </div>

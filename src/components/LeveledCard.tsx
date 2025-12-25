@@ -36,7 +36,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )
@@ -53,7 +53,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )
@@ -70,7 +70,7 @@ export default function LeveledCard({
                   <p key={i}>{part.text}</p>
                 ) : (
                   <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span>:</span>{' '}
+                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
                     <span className="pr-desc">{part.desc}</span>
                   </div>
                 )

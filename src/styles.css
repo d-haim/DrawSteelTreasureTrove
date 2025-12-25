@@ -40,6 +40,11 @@ body{
   margin-top: 1rem;
 }
 
+/* Wider item cards: target only the main list grid */
+.lists section .grid{
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
 .item-card{
   background: var(--card);
   padding: 0.85rem;
@@ -86,6 +91,7 @@ body{
 
 details summary{ cursor:pointer; color:var(--accent) }
 .leveled-levels section{ margin-top:0.5rem }
+.leveled-line{ margin: 0.5rem 0; }
 
 /* power roll formatting */
 .power-roll{ margin-top:6px }

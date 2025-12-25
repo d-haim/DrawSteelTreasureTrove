@@ -47,6 +47,15 @@ export default function PrintDeck({
   }
 
   function showDeck() {
+    function levelSummary(text: string) {
+      if (!text) return ''
+      const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+      const parts = lines.map((line) => {
+        const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
+        return m ? m[2].trim() : line
+      })
+      return parts.join(' ')
+    }
     const html = `
       <!doctype html>
       <html>
@@ -75,6 +84,7 @@ export default function PrintDeck({
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
             .item-power-rolls{ margin-top:8px; padding-top:6px }
             .ds-glyph{ font-family: 'DS Open Glyphs', monospace; font-size:1.25em; display:inline-block; width:auto; line-height:1; color:#000 }
+            .leveled-line{ margin: 0.5em 0; }
             /* ability description text: italic + underline */
             .ability > .meta { margin-bottom: 0.18em; }
             /* reduce gap between ability name and description */
@@ -104,9 +114,9 @@ export default function PrintDeck({
                 ${(it.keywords && it.keywords.length > 0) ? `<div style="font-weight:bold;margin-bottom:0.2em">${escapeHtml(it.keywords.join(', '))}</div>` : ''}
                 <div class="desc">${replaceIntensityGlyphsHtml(escapeHtml((it as any).description || ''))}</div>
                 <div class="effect">${((it as any).first_level || (it as any).fifth_level || (it as any).ninth_level) ? `
-                  ${ (it as any).first_level ? `<section><h4>1st level</h4>${formatPowerRollsHtml((it as any).first_level, true)}</section>` : ''}
-                  ${ (it as any).fifth_level ? `<section><h4>5th level</h4>${formatPowerRollsHtml((it as any).fifth_level, true)}</section>` : ''}
-                  ${ (it as any).ninth_level ? `<section><h4>9th level</h4>${formatPowerRollsHtml((it as any).ninth_level, true)}</section>` : formatPowerRollsHtml((it as any).effect || '', true)}
+                  ${ (it as any).first_level ? `<p class="leveled-line"><strong>1st Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).first_level)))}</p>` : ''}
+                  ${ (it as any).fifth_level ? `<p class="leveled-line"><strong>5th Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).fifth_level)))}</p>` : ''}
+                  ${ (it as any).ninth_level ? `<p class="leveled-line"><strong>9th Level:</strong> ${replaceIntensityGlyphsHtml(escapeHtml(levelSummary((it as any).ninth_level)))}</p>` : formatPowerRollsHtml((it as any).effect || '', true)}
                 ` : `${formatPowerRollsHtml((it as any).effect || '', true)}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)

@@ -8,6 +8,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
   const [formError, setFormError] = useState('')
   const [missingFields, setMissingFields] = useState<string[]>([])
   const [description, setDescription] = useState('')
+  const [keywords, setKeywords] = useState('')
   const [effect, setEffect] = useState('')
   // Leveled item fields
   const [firstLevel, setFirstLevel] = useState('')
@@ -131,6 +132,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
       type: type || 'Custom',
       echelon: echelon as Echelon,
       description,
+      keywords: keywords ? keywords.split(',').map((s) => s.trim()).filter(Boolean) : undefined,
       effect: type === 'Leveled' ? '' : effect,
       abilities: abilities || undefined,
       power_roll: power_roll || undefined,
@@ -153,6 +155,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
     setType('Consumable')
     setEchelon('First')
     setDescription('')
+    setKeywords('')
     setEffect('')
     // reset leveled fields
     setFirstLevel('')
@@ -266,6 +269,10 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
             </div>
           </div>
 
+          <div className="row">
+            <input placeholder="Keywords (comma-separated)" value={keywords} onChange={(e) => setKeywords(e.target.value)} />
+          </div>
+
           {type === 'Leveled' ? (
             <>
               <div className="row">
@@ -301,7 +308,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
           <div className="row">
         {!showAbility ? (
           <button type="button" className="chip-btn" onClick={() => setShowAbility(true)}>
-            Add ability
+            Add ability to item
           </button>
         ) : (
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -380,7 +387,7 @@ export default function CustomCardForm({ onCreate }: { onCreate: (item: BaseItem
       <div className="row">
         {!showItemPr ? (
           <button type="button" className="chip-btn" onClick={() => setShowItemPr(true)}>
-            Add power roll
+            Add power roll to item
           </button>
         ) : (
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

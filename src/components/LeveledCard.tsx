@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Leveled, BaseItem } from '../types/items'
-import { parsePowerRolls, markerToGlyphChar, escapeHtml, replaceIntensityGlyphsHtml } from '../utils/format'
+import { formatPowerRollsHtml, escapeHtml, replaceIntensityGlyphsHtml } from '../utils/format'
 
 export default function LeveledCard({
   item,
@@ -26,53 +26,36 @@ export default function LeveledCard({
         <span className="muted">{item.type}</span>
       </header>
 
+      {item.keywords && (
+        <div className="keywords">
+          {item.keywords.map((k) => (
+            <span key={k} className="keyword">
+              {k}
+            </span>
+          ))}
+        </div>
+      )}
+
       {item.description && <p className="desc" dangerouslySetInnerHTML={toGlyphHtml(item.description)} />}
 
       <div className="leveled-levels">
         {item.first_level && (
-          <section>
-            <h4>1st level</h4>
-            <div className="effect">
-              {parsePowerRolls(item.first_level).map((part, i) =>
-                part.type === 'plain' ? null : (
-                  <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
-                    <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
-                  </div>
-                )
-              )}
-            </div>
-          </section>
+          <details open={compact}>
+            <summary className="summary">1st Level</summary>
+            <div className="effect" dangerouslySetInnerHTML={{ __html: formatPowerRollsHtml(item.first_level) }} />
+          </details>
         )}
         {item.fifth_level && (
-          <section>
-            <h4>5th level</h4>
-            <div className="effect">
-              {parsePowerRolls(item.fifth_level).map((part, i) =>
-                part.type === 'plain' ? null : (
-                  <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
-                    <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
-                  </div>
-                )
-              )}
-            </div>
-          </section>
+          <details open={compact}>
+            <summary className="summary">5th Level</summary>
+            <div className="effect" dangerouslySetInnerHTML={{ __html: formatPowerRollsHtml(item.fifth_level) }} />
+          </details>
         )}
         {item.ninth_level && (
-          <section>
-            <h4>9th level</h4>
-            <div className="effect">
-              {parsePowerRolls(item.ninth_level).map((part, i) =>
-                part.type === 'plain' ? null : (
-                  <div className="power-roll" key={i}>
-                    <span className="range"><span className="ds-glyph">{markerToGlyphChar(part.marker)}</span></span>{' '}
-                    <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(part.desc)} />
-                  </div>
-                )
-              )}
-            </div>
-          </section>
+          <details open={compact}>
+            <summary className="summary">9th Level</summary>
+            <div className="effect" dangerouslySetInnerHTML={{ __html: formatPowerRollsHtml(item.ninth_level) }} />
+          </details>
         )}
       </div>
 

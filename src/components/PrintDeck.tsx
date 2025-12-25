@@ -82,6 +82,7 @@ export default function PrintDeck({
               .print-card section h4{ margin:4px 0 6px 0; font-size:13px }
               .item-power-rolls{ margin-top:8px; padding-top:6px; border-top:1px dashed #ddd }
               .power-roll .range{ width:64px }
+              .ds-glyph{ color:#000 }
               @page{ margin:8mm }
             }
           </style>
@@ -97,13 +98,13 @@ export default function PrintDeck({
                 <div class="muted">${escapeHtml(it.type)}</div>
                 <div class="desc">${escapeHtml((it as any).description || '')}</div>
                 <div class="effect">${((it as any).first_level || (it as any).fifth_level || (it as any).ninth_level) ? `
-                  ${ (it as any).first_level ? `<section><h4>1st level</h4>${formatPowerRollsHtml((it as any).first_level)}</section>` : ''}
-                  ${ (it as any).fifth_level ? `<section><h4>5th level</h4>${formatPowerRollsHtml((it as any).fifth_level)}</section>` : ''}
-                  ${ (it as any).ninth_level ? `<section><h4>9th level</h4>${formatPowerRollsHtml((it as any).ninth_level)}</section>` : formatPowerRollsHtml((it as any).effect || '')}
-                ` : `${formatPowerRollsHtml((it as any).effect || '')}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
+                  ${ (it as any).first_level ? `<section><h4>1st level</h4>${formatPowerRollsHtml((it as any).first_level, true)}</section>` : ''}
+                  ${ (it as any).fifth_level ? `<section><h4>5th level</h4>${formatPowerRollsHtml((it as any).fifth_level, true)}</section>` : ''}
+                  ${ (it as any).ninth_level ? `<section><h4>9th level</h4>${formatPowerRollsHtml((it as any).ninth_level, true)}</section>` : formatPowerRollsHtml((it as any).effect || '', true)}
+                ` : `${formatPowerRollsHtml((it as any).effect || '', true)}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
                   const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim())}</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
+                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim(), true)}</span> <span class="pr-desc">${escapeHtml(m[2].trim())}</span></div>`
                   return `<div class="power-roll"><span class="pr-desc">${escapeHtml(line.trim())}</span></div>`
                 }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities)}
                 </div>

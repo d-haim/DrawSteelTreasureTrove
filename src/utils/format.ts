@@ -45,7 +45,7 @@ export function parsePowerRolls(text: string): PowerRollPart[] {
   return parts
 }
 
-export function formatPowerRollsHtml(text: string) {
+export function formatPowerRollsHtml(text: string, forPrint = false) {
   if (!text) return ''
 
   function esc(s: string) {
@@ -76,7 +76,7 @@ export function formatPowerRollsHtml(text: string) {
     let desc = text.slice(start, end).trim()
     desc = desc.replace(/^[:\-\s]+/, '')
 
-    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}</span> <span class="pr-desc">${esc(desc)}</span></div>`
+    result += `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${esc(desc)}</span></div>`
   }
 
   return result
@@ -85,7 +85,7 @@ export function formatPowerRollsHtml(text: string) {
 // Structured ability formatting helpers
 import type { Ability, PowerRoll } from '../types/items'
 
-function prStringToHtml(line: string) {
+function prStringToHtml(line: string, forPrint = false) {
   // Header detection: lines that start with 'Power Roll' (case-insensitive)
   if (/^\s*Power\s+Roll\b/i.test(line)) {
     return `<div class="power-roll power-roll-header">${escapeHtml(line.trim())}</div>`
@@ -96,7 +96,7 @@ function prStringToHtml(line: string) {
   if (m) {
     const marker = m[1].trim()
     const desc = m[2].trim()
-    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker)}</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
+    return `<div class="power-roll"><span class="range">${markerToGlyphHtml(marker, forPrint)}</span> <span class="pr-desc">${escapeHtml(desc)}</span></div>`
   }
 
   // fallback: treat as single-line PR header/desc
@@ -141,9 +141,17 @@ export function formatAbilitiesHtmlStructured(abilities: Ability[] | undefined) 
 }
 
 // Map a PR marker (<=11, 12-16, 17+) to a glyph codepoint from the DS Open Glyphs font
-export function markerToGlyphHtml(marker: string) {
+export function markerToGlyphHtml(marker: string, forPrint = false) {
   const m = marker.trim()
-  if (/^<=/.test(m)) return `<span class="ds-glyph">&#x005B;</span>` // <=11 -> U+005B
+  // accept ascii '<=' or the unicode '≤' (U+2264)
+  if (forPrint) {
+    if (/^(?:<=|\u2264)/.test(m)) return `<span class="ds-glyph">&#x007B;</span>` // <=11 -> U+007B
+    if (/^\d+\s*-\s*\d+/.test(m)) return `<span class="ds-glyph">&#x005F;</span>` // 12-16 -> U+005F
+    if (/^\d+\+/.test(m)) return `<span class="ds-glyph">&#x007D;</span>` // 17+ -> U+007D
+    return escapeHtml(marker)
+  }
+
+  if (/^(?:<=|\u2264)/.test(m)) return `<span class="ds-glyph">&#x005B;</span>` // <=11 -> U+005B
   if (/^\d+\s*-\s*\d+/.test(m)) return `<span class="ds-glyph">&#x002D;</span>` // 12-16 -> U+002D
   if (/^\d+\+/.test(m)) return `<span class="ds-glyph">&#x005D;</span>` // 17+ -> U+005D
   return escapeHtml(marker)
@@ -151,7 +159,8 @@ export function markerToGlyphHtml(marker: string) {
 
 export function markerToGlyphChar(marker: string) {
   const m = marker.trim()
-  if (/^<=/.test(m)) return String.fromCharCode(parseInt('005B', 16))
+  // accept ascii '<=' or the unicode '≤' (U+2264)
+  if (/^(?:<=|\u2264)/.test(m)) return String.fromCharCode(parseInt('005B', 16))
   if (/^\d+\s*-\s*\d+/.test(m)) return String.fromCharCode(parseInt('002D', 16))
   if (/^\d+\+/.test(m)) return String.fromCharCode(parseInt('005D', 16))
   return marker

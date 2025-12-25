@@ -23,6 +23,8 @@ export default function PrintDeck({
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   function triggerImport() {
+    // Clear the value first so selecting the same file again will still trigger a change event
+    if (fileInputRef.current) fileInputRef.current.value = ''
     fileInputRef.current?.click()
   }
 

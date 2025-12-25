@@ -65,7 +65,6 @@ export default function PrintDeck({
             .power-roll .range{ color: #2b6cb0; font-weight:700; display:inline-block; width:72px }
             .power-roll .pr-desc{ display:inline-block }
             .power-roll.power-roll-header{ background: #f7f7f7; padding:6px; border-radius:6px; font-weight:700; display:block }
-            .disclaimer{ margin-top:12px; color:#666; font-size:12px }
             @media print{
               body{ margin: 8mm; color:#111; font-size:12px }
               .print-grid{ gap:8px; grid-template-columns: repeat(2, minmax(220px, 1fr)); }
@@ -105,8 +104,6 @@ export default function PrintDeck({
             `)
               .join('')}
           </div>
-
-          <div class="disclaimer">Draw Steel Treasure Trove is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC.<br/><br/>DRAW STEEL © 2024 MCDM Productions, LLC.</div>
         </body>
       </html>
     `

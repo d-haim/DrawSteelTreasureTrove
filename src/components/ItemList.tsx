@@ -213,8 +213,8 @@ export default function ItemList({
           <button className="random-btn" onClick={pickRandom} disabled={filtered.length === 0}>
             Random Item
           </button>
-          <button className="chip-btn" onClick={() => setSelectedTypes([])}>
-            Clear Type Filters
+          <button className="chip-btn" onClick={() => { setSelectedTypes([]); setSelectedEchelons([]); setSelectedKeywords([]); setQuery('') }}>
+            Clear filters
           </button>
         </div>
 

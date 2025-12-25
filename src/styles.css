@@ -170,9 +170,9 @@ details summary{ cursor:pointer; color:var(--accent) }
 .custom-form h4{ margin:0 0 6px 0 }
 
 /* Narrow select used for type/echelon */
-.custom-form select.narrow-select{ flex: 0 0 140px; width: 140px; height: 36px; padding: 0 0.6rem }
+.custom-form select.narrow-select{ flex: 0 0 140px; width: 140px; height: 36px; padding: 0 0.6rem; }
 .custom-form input, .custom-form select{ height: 36px; line-height: 20px }
-.custom-form textarea{ min-height:64px; resize: vertical }
+.custom-form textarea{ min-height:64px; resize: vertical; }
 
 /* Error visuals */
 .custom-form input.error, .custom-form select.error, .custom-form textarea.error{ border: 1px solid #f87171 !important; box-shadow: 0 0 0 4px rgba(248,113,113,0.06); }

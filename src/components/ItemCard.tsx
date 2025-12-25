@@ -1,12 +1,26 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
 
-export default function ItemCard({ item }: { item: BaseItem }) {
+export default function ItemCard({
+  item,
+  onAddToDeck,
+  onRemoveFromDeck,
+  inDeck = false,
+  showProject = true,
+  compact = false
+}: {
+  item: BaseItem
+  onAddToDeck?: (item: BaseItem) => void
+  onRemoveFromDeck?: (item: BaseItem) => void
+  inDeck?: boolean
+  showProject?: boolean
+  compact?: boolean
+}) {
   return (
-    <article className="item-card">
+    <article className={`item-card ${compact ? 'compact' : ''}`}>
       <header>
         <h3>{item.name}</h3>
-        {item.echelon && <span className="chip">{item.echelon}</span>}
+        {!compact && item.echelon && <span className="chip">{item.echelon}</span>}
         <span className="muted">{item.type}</span>
       </header>
 
@@ -21,20 +35,38 @@ export default function ItemCard({ item }: { item: BaseItem }) {
       )}
 
       {item.description && <p className="desc">{item.description}</p>}
+
       {item.effect && (
-        <details>
+        <details open={compact}>
           <summary className="summary">Effect</summary>
           <p className="effect">{item.effect}</p>
         </details>
       )}
 
-      {item.project && (
+      {showProject && item.project && (
         <div className="project">
           <strong>Project:</strong>
           <div>Prereq: {item.project.prerequisite}</div>
           <div>Source: {item.project.source}</div>
           <div>Characteristics: {item.project.characteristics?.join(', ')}</div>
           <div>Goal: {item.project.goal}</div>
+        </div>
+      )}
+
+      {/* Deck controls */}
+      {(onAddToDeck || onRemoveFromDeck) && (
+        <div className="card-actions">
+          {!inDeck && onAddToDeck && (
+            <button className="chip-btn" onClick={() => onAddToDeck(item)}>
+              Add to print deck
+            </button>
+          )}
+
+          {inDeck && onRemoveFromDeck && (
+            <button className="chip-btn" onClick={() => onRemoveFromDeck(item)}>
+              Remove from deck
+            </button>
+          )}
         </div>
       )}
     </article>

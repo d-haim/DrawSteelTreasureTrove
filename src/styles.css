@@ -38,7 +38,15 @@ body{
   border-radius: 8px;
   text-align: left;
   box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 220px; /* ensures actions can stick to bottom */
 }
+
+.item-card.compact{ min-height: 0; padding:0.6rem }
+
+.card-actions{ margin-top: auto; display:flex; gap:0.5rem; justify-content:flex-end }
 
 .item-card header{
   display:flex;
@@ -82,8 +90,20 @@ details summary{ cursor:pointer; color:var(--accent) }
 .filter-summary{ font-size:0.9rem }
 
 .random-controls{ display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem }
-.random-btn{ background: linear-gradient(90deg, rgba(96,165,250,0.18), rgba(96,165,250,0.08)); border: none; padding:0.45rem 0.75rem; border-radius:6px; cursor:pointer }
+.random-btn{ color: var(--fg); background: linear-gradient(90deg, rgba(96,165,250,0.18), rgba(96,165,250,0.08)); border: none; padding:0.45rem 0.75rem; border-radius:6px; cursor:pointer }
 .random-btn:disabled{ opacity: 0.4; cursor:not-allowed }
 .random-panel{ margin-top:0.75rem; border-left:4px solid var(--accent); padding:0.75rem; background: rgba(96,165,250,0.02); border-radius:6px }
 .random-panel-header{ display:flex; justify-content:space-between; align-items:center; gap:1rem }
 .random-panel-content{ margin-top:0.5rem }
+
+/* Print deck */
+.print-deck{ border:1px dashed rgba(255,255,255,0.03); padding:0.6rem; border-radius:6px }
+.print-deck-controls{ display:flex; gap:8px; align-items:center }
+.print-deck-grid .item-card{ background: rgba(255,255,255,0.02); }
+
+/* Print media defaults */
+@media print{
+  body *{ visibility: hidden }
+  .print-only, .print-only *{ visibility: visible }
+  .print-only{ position: absolute; left: 0; top:0; width:100% }
+}

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
+import PrintDeck from './PrintDeck'
 import type { Consumable, Trinket, Leveled, BaseItem } from '../types/items'
 
 function textMatch(item: BaseItem, q: string) {
@@ -34,6 +35,20 @@ export default function ItemList({
   const [selectedEchelons, setSelectedEchelons] = useState<string[]>([])
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [randomItem, setRandomItem] = useState<(BaseItem & { __category: string }) | null>(null)
+  const [deck, setDeck] = useState<(BaseItem & { __category?: string })[]>([])
+  const [includeProjectInPrint, setIncludeProjectInPrint] = useState(true)
+
+  function addToDeck(item: BaseItem & { __category?: string }) {
+    setDeck((d) => (d.some((x) => x.type === item.type && x.name === item.name) ? d : [...d, item]))
+  }
+
+  function removeFromDeck(item: BaseItem & { __category?: string }) {
+    setDeck((d) => d.filter((x) => !(x.type === item.type && x.name === item.name)))
+  }
+
+  function clearDeck() {
+    setDeck([])
+  }
 
   function pickRandom() {
     if (!filtered || filtered.length === 0) return
@@ -74,6 +89,9 @@ export default function ItemList({
       return true
     })
   }, [allItems, query, selectedTypes, selectedEchelons, selectedKeywords])
+
+  // Keep filteredItems with __category for adding to deck easily
+  const filteredWithCategory = filtered as (BaseItem & { __category?: string })[]
 
   function toggle<T extends string>(arr: T[], v: T) {
     return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]
@@ -169,22 +187,65 @@ export default function ItemList({
 
             <div className="random-panel-content">
               {randomItem.__category === 'Leveled' ? (
-                <LeveledCard item={randomItem as Leveled} />
+                <LeveledCard item={randomItem as Leveled} onAddToDeck={() => addToDeck(randomItem)} />
               ) : (
-                <ItemCard item={randomItem as Consumable | Trinket} />
+                <ItemCard item={randomItem as Consumable | Trinket} onAddToDeck={() => addToDeck(randomItem)} />
               )}
             </div>
           </div>
         )}
+
+        <div style={{ marginTop: 8, marginBottom: 8 }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div className="muted">Print deck: <strong>{deck.length}</strong></div>
+            <label style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+              <input type="checkbox" checked={includeProjectInPrint} onChange={(e) => setIncludeProjectInPrint(e.target.checked)} />
+              <span className="muted">Include project</span>
+            </label>
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button className="chip-btn" onClick={() => setDeck(filteredWithCategory.slice(0, 1))}>Add first result</button>
+              <button className="chip-btn" onClick={() => setDeck(filteredWithCategory)}>Add all results</button>
+              <button className="chip-btn" onClick={clearDeck}>Clear deck</button>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            <label className="muted">Deck controls — you can also add/remove from cards</label>
+          </div>
+
+          {/* PrintDeck */}
+          <div style={{ marginTop: 10 }}>
+            <div className="print-deck-panel">
+              <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} />
+            </div>
+          </div>
+        </div>
       </div>
 
       <section>
         <div className="grid">
           {filtered.map((it) =>
             (it.__category === 'Leveled' ? (
-              <LeveledCard key={it.name} item={it as Leveled} />
+              <LeveledCard
+                key={it.name}
+                item={it as Leveled}
+                onAddToDeck={() => addToDeck(it as BaseItem & { __category?: string })}
+                onRemoveFromDeck={() => removeFromDeck(it as BaseItem & { __category?: string })}
+                inDeck={deck.some((x) => x.name === it.name && x.type === it.type)}
+                showProject={includeProjectInPrint}
+              />
             ) : (
-              <ItemCard key={it.name} item={it as Consumable | Trinket} />
+              <ItemCard
+                key={it.name}
+                item={it as Consumable | Trinket}
+                onAddToDeck={() => addToDeck(it as BaseItem & { __category?: string })}
+                onRemoveFromDeck={() => removeFromDeck(it as BaseItem & { __category?: string })}
+                inDeck={deck.some((x) => x.name === it.name && x.type === it.type)}
+                showProject={includeProjectInPrint}
+              />
             ))
           )}
         </div>

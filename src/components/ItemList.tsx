@@ -121,7 +121,10 @@ export default function ItemList({
   const allEchelons = useMemo(() => {
     const set = new Set<string>()
     allItems.forEach((it) => it.echelon && set.add(it.echelon))
-    return Array.from(set).sort()
+    const ORDER = ['First', 'Second', 'Third', 'Fourth']
+    const present = ORDER.filter((o) => set.has(o))
+    const others = Array.from(set).filter((x) => !ORDER.includes(x)).sort()
+    return [...present, ...others]
   }, [allItems])
 
   const filtered = useMemo(() => {
@@ -265,7 +268,22 @@ export default function ItemList({
             <div className="print-deck-panel">
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <PrintDeck deck={deck} onRemove={removeFromDeck} onClear={clearDeck} includeProject={includeProjectInPrint} onMove={moveItem} />
+                  <PrintDeck
+                    deck={deck}
+                    onRemove={removeFromDeck}
+                    onClear={clearDeck}
+                    includeProject={includeProjectInPrint}
+                    onMove={moveItem}
+                    onImport={(items) => {
+                      // Imported JSON should replace the current deck (explicit behavior)
+                      const normalized = items.map((it: any) => ({
+                        ...it,
+                        __category: it.__category || (it.first_level || it.fifth_level || it.ninth_level ? 'Leveled' : 'Imported')
+                      }))
+                      setDeck(normalized)
+                      setRandomItem(null)
+                    }}
+                  />
                 </div>
 
                 <div style={{ width: 320 }}>

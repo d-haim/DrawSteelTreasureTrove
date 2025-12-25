@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import type { BaseItem } from '../types/items'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
@@ -9,15 +9,40 @@ export default function PrintDeck({
   onRemove,
   onClear,
   includeProject,
-  onMove
+  onMove,
+  onImport
 }: {
   deck: (BaseItem & { __category?: string })[]
   onRemove: (item: BaseItem) => void
   onClear: () => void
   includeProject: boolean
   onMove?: (from: number, to: number) => void
+  onImport?: (items: BaseItem[]) => void
 }) {
   const [collapsed, setCollapsed] = useState(true)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  function triggerImport() {
+    fileInputRef.current?.click()
+  }
+
+  async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    try {
+      const text = await file.text()
+      const json = JSON.parse(text)
+      if (!Array.isArray(json)) {
+        alert('Invalid JSON: expected an array of items')
+        return
+      }
+      const normalized = json.map((it: any) => ({ ...it }))
+      ;(onImport as any)?.(normalized)
+    } catch (err: any) {
+      alert('Could not import JSON: ' + (err && err.message ? err.message : String(err)))
+    }
+    e.currentTarget.value = ''
+  }
 
   function showDeck() {
     const html = `
@@ -127,6 +152,10 @@ export default function PrintDeck({
           <button className="chip-btn" onClick={exportDeck} disabled={deck.length === 0}>
             Export JSON
           </button>
+          <button className="chip-btn" onClick={triggerImport}>
+            Import JSON
+          </button>
+          <input ref={fileInputRef} type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={handleImportFile} />
           <button className="random-btn" onClick={showDeck} disabled={deck.length === 0}>
             Show deck ({deck.length})
           </button>

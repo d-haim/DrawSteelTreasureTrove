@@ -83,7 +83,7 @@ export default function LeveledCard({
       {showProject && item.project && (
         <div className="project">
           <strong>Project:</strong>
-          <div>Prereq: {item.project.prerequisite}</div>
+          <div>Prerequisite: {item.project.prerequisite}</div>
           <div>Source: {item.project.source}</div>
           <div>Characteristics: {item.project.characteristics?.join(', ')}</div>
           <div>Goal: {item.project.goal}</div>

@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react'
 import type { BaseItem } from '../types/items'
+import { isLeveledItem } from '../types/items'
 import ItemCard from './ItemCard'
 import LeveledCard from './LeveledCard'
-import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml, replacePotencyGlyphsHtml } from '../utils/format'
+import { formatPowerRollsHtml, formatAbilitiesHtmlStructured, markerToGlyphHtml, replacePotencyGlyphsHtml, escapeHtml, extractPowerRollMarker } from '../utils/format'
+// Removed duplicate escapeHtml function
 // Use Vite asset bundling to get the correct hashed URL for the font in production
 // Path from src/components to assets at project root
 import dsOpenGlyphsUrl from '../../assets/DS Open Glyphs 1.75 Regular.ttf?url'
@@ -41,6 +43,20 @@ export default function PrintDeck({
         alert('Invalid JSON: expected an array of items')
         return
       }
+      
+      // Validate that items have required fields
+      const invalidItems = json.filter((it: any, idx: number) => {
+        if (!it || typeof it !== 'object') return true
+        if (!it.name || typeof it.name !== 'string') return true
+        if (!it.type || typeof it.type !== 'string') return true
+        return false
+      })
+      
+      if (invalidItems.length > 0) {
+        alert(`Invalid items found: ${invalidItems.length} items are missing required fields (name, type)`)
+        return
+      }
+      
       const normalized = json.map((it: any) => ({ ...it }))
       ;(onImport as any)?.(normalized)
     } catch (err: any) {
@@ -54,8 +70,8 @@ export default function PrintDeck({
       if (!text) return ''
       const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
       const parts = lines.map((line) => {
-        const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-        return m ? m[2].trim() : line
+        const parsed = extractPowerRollMarker(line)
+        return parsed ? parsed.desc : line
       })
       return parts.join(' ')
     }
@@ -122,8 +138,8 @@ export default function PrintDeck({
                   ${ (it as any).ninth_level ? `<p class="leveled-line"><strong>9th Level:</strong> ${replacePotencyGlyphsHtml(escapeHtml(levelSummary((it as any).ninth_level)))}</p>` : formatPowerRollsHtml((it as any).effect || '', true)}
                 ` : `${formatPowerRollsHtml((it as any).effect || '', true)}`}${(it as any).power_roll && (it as any).power_roll.length ? `<div class="item-power-rolls">` + (it as any).power_roll.map((line: string) => {
                   if (/^\s*Power\s+Roll\b/i.test(line)) return `<div class="power-roll power-roll-header"><strong>${escapeHtml(line.trim())}</strong></div>`
-                  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.]?\s*(.*)$/)
-                  if (m) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(m[1].trim(), true)}</span> <span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(m[2].trim()))}</span></div>`
+                  const parsed = extractPowerRollMarker(line)
+                  if (parsed) return `<div class="power-roll"><span class="range">${markerToGlyphHtml(parsed.marker, true)}</span> <span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(parsed.desc))}</span></div>`
                   return `<div class="power-roll"><span class="pr-desc">${replacePotencyGlyphsHtml(escapeHtml(line.trim()))}</span></div>`
                 }).join('') + `</div>` : ''}${formatAbilitiesHtmlStructured((it as any).abilities, true)}
                 </div>
@@ -136,18 +152,25 @@ export default function PrintDeck({
       </html>
     `
 
-    const w = window.open('', '_blank')
-    if (!w) return
-
-    // Write and close the document; do not auto-trigger printing — user can print manually
-    w.document.open()
-    w.document.write(html)
-    w.document.close()
-
     try {
-      w.focus && w.focus()
-    } catch (e) {
-      // ignore
+      const w = window.open('', '_blank')
+      if (!w) {
+        console.error('Failed to open print window - popup may be blocked')
+        return
+      }
+
+      // Write and close the document; do not auto-trigger printing — user can print manually
+      w.document.open()
+      w.document.write(html)
+      w.document.close()
+
+      try {
+        w.focus && w.focus()
+      } catch (e) {
+        // ignore focus errors
+      }
+    } catch (err) {
+      console.error('Error opening print window:', err)
     }
   }
 
@@ -160,15 +183,6 @@ export default function PrintDeck({
     a.download = 'deck.json'
     a.click()
     URL.revokeObjectURL(url)
-  }
-
-  function escapeHtml(s: string) {
-    return s
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;')
   }
 
   return (
@@ -221,12 +235,20 @@ export default function PrintDeck({
               }}
               onDrop={(e) => {
                 e.preventDefault()
-                const from = Number(e.dataTransfer.getData('text/plain'))
-                const to = idx
-                e.currentTarget.classList.remove('drag-over')
-                const wrappers = document.querySelectorAll('.draggable-wrapper')
-                wrappers.forEach((w) => w.classList.remove('dragging'))
-                ;(onMove as any)?.(from, to)
+                try {
+                  const from = Number(e.dataTransfer.getData('text/plain'))
+                  const to = idx
+                  if (isNaN(from) || from < 0 || from >= deck.length || to < 0 || to >= deck.length) {
+                    console.error('Invalid drag-drop indices:', from, to)
+                    return
+                  }
+                  e.currentTarget.classList.remove('drag-over')
+                  const wrappers = document.querySelectorAll('.draggable-wrapper')
+                  wrappers.forEach((w) => w.classList.remove('dragging'))
+                  ;(onMove as any)?.(from, to)
+                } catch (err) {
+                  console.error('Error during drag-drop:', err)
+                }
               }}
               onDragEnd={(e) => {
                 const wrappers = document.querySelectorAll('.draggable-wrapper')
@@ -235,7 +257,7 @@ export default function PrintDeck({
               }}
             >
 
-              {(it as any).__category === 'Leveled' || (it as any).first_level ? (
+              {isLeveledItem(it) ? (
                 <LeveledCard item={it as any} compact={true} showProject={includeProject} onRemoveFromDeck={onRemove} inDeck={true} />
               ) : (
                 <ItemCard item={it} compact={true} showProject={includeProject} onRemoveFromDeck={onRemove} inDeck={true} />

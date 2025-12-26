@@ -4,6 +4,7 @@ import LeveledCard from './LeveledCard'
 import PrintDeck from './PrintDeck'
 import CustomCardForm from './CustomCardForm'
 import type { Consumable, Trinket, Leveled, BaseItem } from '../types/items'
+import { isLeveledItem } from '../types/items'
 
 function textMatch(item: BaseItem, q: string) {
   if (!q) return true
@@ -40,6 +41,12 @@ export default function ItemList({
   const [includeProjectInPrint, setIncludeProjectInPrint] = useState(true)
 
   function addToDeck(item: BaseItem & { __category?: string }) {
+    // Validate item has required fields
+    if (!item || !item.name || !item.type) {
+      console.error('Cannot add invalid item to deck:', item)
+      return
+    }
+    
     setDeck((d) => {
       const idx = d.findIndex((x) => x.name === item.name)
       if (idx >= 0) {
@@ -52,35 +59,15 @@ export default function ItemList({
   }
 
   function removeFromDeck(item: BaseItem & { __category?: string }) {
+    if (!item || !item.name || !item.type) {
+      console.error('Cannot remove invalid item from deck:', item)
+      return
+    }
     setDeck((d) => d.filter((x) => !(x.type === item.type && x.name === item.name)))
   }
 
   function clearDeck() {
     setDeck([])
-  }
-
-  function moveUp(item: BaseItem & { __category?: string }) {
-    setDeck((d) => {
-      const idx = d.findIndex((x) => x.type === item.type && x.name === item.name)
-      if (idx <= 0) return d
-      const next = [...d]
-      const tmp = next[idx - 1]
-      next[idx - 1] = next[idx]
-      next[idx] = tmp
-      return next
-    })
-  }
-
-  function moveDown(item: BaseItem & { __category?: string }) {
-    setDeck((d) => {
-      const idx = d.findIndex((x) => x.type === item.type && x.name === item.name)
-      if (idx < 0 || idx === d.length - 1) return d
-      const next = [...d]
-      const tmp = next[idx + 1]
-      next[idx + 1] = next[idx]
-      next[idx] = tmp
-      return next
-    })
   }
 
   function moveItem(from: number, to: number) {
@@ -298,7 +285,7 @@ export default function ItemList({
       <section>
         <div className="grid">
           {filtered.map((it) =>
-            (it.__category === 'Leveled' ? (
+            (isLeveledItem(it) ? (
               <LeveledCard
                 key={it.name}
                 item={it as Leveled}

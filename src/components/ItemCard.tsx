@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BaseItem } from '../types/items'
-import { parsePowerRolls, markerToGlyphChar, replacePotencyGlyphsHtml, escapeHtml } from '../utils/format'
+import { parsePowerRolls, markerToGlyphChar, replacePotencyGlyphsHtml, escapeHtml, extractPowerRollMarker } from '../utils/format'
 
 export default function ItemCard({
   item,
@@ -63,11 +63,11 @@ export default function ItemCard({
                 {item.power_roll.map((line, i) => {
                   // header (bold in item card)
                   if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`pr-${i}`}><strong>{line.trim()}</strong></div>)
-                  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-                  if (m) return (
+                  const parsed = extractPowerRollMarker(line)
+                  if (parsed) return (
                     <div className="power-roll" key={`pr-${i}`}>
-                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span>{' '}
-                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(m[2].trim())} />
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(parsed.marker)}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(parsed.desc)} />
                     </div>
                   )
                   return (
@@ -120,11 +120,11 @@ export default function ItemCard({
                 {a.power_roll && a.power_roll.length > 0 && a.power_roll.map((line, pi) => {
                   // header
                   if (/^\s*Power\s+Roll\b/i.test(line)) return (<div className="power-roll power-roll-header" key={`ab-${ai}-pr-${pi}`}><strong>{line.trim()}</strong></div>)
-                  const m = line.match(/^\s*(<=\s*\d+|\d+\s*-\s*\d+|\d+\+)\s*[:\-\.\u2013\u2014]?\s*(.*)$/)
-                  if (m) return (
+                  const parsed = extractPowerRollMarker(line)
+                  if (parsed) return (
                     <div className="power-roll" key={`ab-${ai}-pr-${pi}`}>
-                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(m[1].trim())}</span></span>{' '}
-                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(m[2].trim())} />
+                      <span className="range"><span className="ds-glyph">{markerToGlyphChar(parsed.marker)}</span></span>{' '}
+                      <span className="pr-desc" dangerouslySetInnerHTML={toGlyphHtml(parsed.desc)} />
                     </div>
                   )
                   return (

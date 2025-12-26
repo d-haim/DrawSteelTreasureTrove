@@ -42,3 +42,13 @@ export interface Leveled extends BaseItem {
   fifth_level?: string
   ninth_level?: string
 }
+
+// Type guard utility to check if an item is a Leveled item
+export function isLeveledItem(item: BaseItem | (BaseItem & { __category?: string })): item is Leveled {
+  return (
+    ('__category' in item && item.__category === 'Leveled') ||
+    'first_level' in item ||
+    'fifth_level' in item ||
+    'ninth_level' in item
+  )
+}

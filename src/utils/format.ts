@@ -7,7 +7,23 @@ export function escapeHtml(s: string) {
     .replace(/'/g, '&#039;')
 }
 
-const markerRe = /(?:<=\s*\d+|\d+\s*-\s*\d+|\d+\+)/g
+// Common power roll marker pattern - extract once for reuse
+export const POWER_ROLL_MARKER_PATTERN = '(?:<=\\s*\\d+|\\d+\\s*-\\s*\\d+|\\d+\\+)'
+const markerRe = new RegExp(POWER_ROLL_MARKER_PATTERN, 'g')
+
+// Utility to test if a line contains a power roll marker
+export function containsPowerRollMarker(text: string): boolean {
+  return new RegExp(POWER_ROLL_MARKER_PATTERN).test(text)
+}
+
+// Utility to extract marker and description from a line
+export function extractPowerRollMarker(line: string): { marker: string; desc: string } | null {
+  const m = line.match(new RegExp(`^\\s*(${POWER_ROLL_MARKER_PATTERN})\\s*[:\\-\\.\\u2013\\u2014]?\\s*(.*)$`))
+  if (m) {
+    return { marker: m[1].trim(), desc: m[2].trim() }
+  }
+  return null
+}
 
 export type PowerRollPart =
   | { type: 'plain'; text: string }

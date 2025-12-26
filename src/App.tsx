@@ -22,6 +22,12 @@ export default function App() {
           fetch(trinketsUrl),
           fetch(leveledUrl)
         ])
+        
+        // Check all responses succeeded
+        if (!cResp.ok || !tResp.ok || !lResp.ok) {
+          throw new Error('Failed to load one or more item files')
+        }
+        
         const [c, t, l] = await Promise.all([cResp.json(), tResp.json(), lResp.json()])
         if (!cancelled) {
           setConsumables(Array.isArray(c) ? (c as Consumable[]) : [])

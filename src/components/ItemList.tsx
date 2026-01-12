@@ -221,9 +221,21 @@ export default function ItemList({
 
             <div className="random-panel-content">
               {randomItem.__category === 'Leveled' ? (
-                <LeveledCard item={randomItem as Leveled} onAddToDeck={() => addToDeck(randomItem)} />
+                <LeveledCard 
+                  item={randomItem as Leveled} 
+                  onAddToDeck={() => addToDeck(randomItem)} 
+                  onRemoveFromDeck={() => removeFromDeck(randomItem)}
+                  inDeck={deck.some((x) => x.name === randomItem.name)}
+                  showProject={includeProjectInPrint}
+                />
               ) : (
-                <ItemCard item={randomItem as Consumable | Trinket} onAddToDeck={() => addToDeck(randomItem)} />
+                <ItemCard 
+                  item={randomItem as Consumable | Trinket} 
+                  onAddToDeck={() => addToDeck(randomItem)} 
+                  onRemoveFromDeck={() => removeFromDeck(randomItem)}
+                  inDeck={deck.some((x) => x.name === randomItem.name)}
+                  showProject={includeProjectInPrint}
+                />
               )}
             </div>
           </div>

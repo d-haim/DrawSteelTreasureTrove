@@ -208,4 +208,134 @@ describe('ItemList', () => {
     expect(screen.queryByText('Fire Bomb')).not.toBeInTheDocument()
     expect(screen.queryByText('Lucky Coin')).not.toBeInTheDocument()
   })
+
+  it('shows random item card when Random Item is clicked', async () => {
+    const user = userEvent.setup()
+    render(<ItemList consumables={mockConsumables} trinkets={mockTrinkets} leveled={mockLeveled} />)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    // Should show the random panel with one of the items
+    expect(screen.getByText('Random pick')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Pick again' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Clear' })).toBeInTheDocument()
+  })
+
+  it('random item card shows Add to deck button initially', async () => {
+    const user = userEvent.setup()
+    render(<ItemList consumables={mockConsumables} trinkets={mockTrinkets} leveled={mockLeveled} />)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    // Wait for random panel to appear
+    expect(screen.getByText('Random pick')).toBeInTheDocument()
+    
+    // Should have "Add to deck" button (not "Remove from deck")
+    const addButtons = screen.getAllByRole('button', { name: 'Add to deck' })
+    expect(addButtons.length).toBeGreaterThan(0)
+  })
+
+  it('random item card button changes to Remove from deck after adding', async () => {
+    const user = userEvent.setup()
+    render(<ItemList consumables={mockConsumables} trinkets={mockTrinkets} leveled={mockLeveled} />)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    // Wait for random panel
+    expect(screen.getByText('Random pick')).toBeInTheDocument()
+    
+    // Click the Add to deck button in the random panel
+    const addButtons = screen.getAllByRole('button', { name: 'Add to deck' })
+    await user.click(addButtons[0])
+    
+    // Button should now be "Remove from deck" - may have multiple (one in panel, one in grid)
+    const removeButtons = screen.getAllByRole('button', { name: 'Remove from deck' })
+    expect(removeButtons.length).toBeGreaterThan(0)
+  })
+
+  it('random item card can be removed from deck', async () => {
+    const user = userEvent.setup()
+    render(<ItemList consumables={mockConsumables} trinkets={mockTrinkets} leveled={mockLeveled} />)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    // Add to deck
+    const addButtons = screen.getAllByRole('button', { name: 'Add to deck' })
+    await user.click(addButtons[0])
+    
+    // Remove from deck - should have one "Remove from deck" button in the random panel
+    const removeButtons = screen.getAllByRole('button', { name: 'Remove from deck' })
+    expect(removeButtons.length).toBeGreaterThan(0)
+    
+    // Click the first one (in random panel)
+    await user.click(removeButtons[0])
+    
+    // Button should change back to "Add to deck"
+    const addButtonsAfter = screen.getAllByRole('button', { name: 'Add to deck' })
+    expect(addButtonsAfter.length).toBeGreaterThan(0)
+  })
+
+  it('random item card respects Include project toggle', async () => {
+    const user = userEvent.setup()
+    const leveledWithProject: Leveled[] = [
+      {
+        name: 'Sword with Project',
+        type: 'Weapon',
+        echelon: 'Third',
+        description: 'Test weapon',
+        effect: 'Damage',
+        first_level: 'Level 1',
+        fifth_level: 'Level 5',
+        ninth_level: 'Level 9',
+        keywords: ['Weapon'],
+        project: {
+          prerequisite: 'Level 5',
+          source: 'Blacksmith',
+          characteristics: ['Sharp'],
+          goal: 'Craft legendary weapon'
+        }
+      }
+    ]
+    
+    render(<ItemList consumables={[]} trinkets={[]} leveled={leveledWithProject} />)
+    
+    // Uncheck the Include project toggle first (it's checked by default)
+    const projectCheckbox = screen.getByLabelText(/Include project/i)
+    await user.click(projectCheckbox)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    // Project should not be visible (checkbox unchecked)
+    expect(screen.queryByText('Project:')).not.toBeInTheDocument()
+    expect(screen.queryByText('Blacksmith')).not.toBeInTheDocument()
+    
+    // Enable Include project toggle
+    await user.click(projectCheckbox)
+    
+    // Project details should now be visible in both random panel and grid
+    const projectHeaders = screen.getAllByText('Project:')
+    expect(projectHeaders.length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Blacksmith/).length).toBeGreaterThan(0)
+  })
+
+  it('clears random item when Clear button is clicked', async () => {
+    const user = userEvent.setup()
+    render(<ItemList consumables={mockConsumables} trinkets={mockTrinkets} leveled={mockLeveled} />)
+    
+    const randomButton = screen.getByRole('button', { name: 'Random Item' })
+    await user.click(randomButton)
+    
+    expect(screen.getByText('Random pick')).toBeInTheDocument()
+    
+    const clearButton = screen.getByRole('button', { name: 'Clear' })
+    await user.click(clearButton)
+    
+    // Random panel should be gone
+    expect(screen.queryByText('Random pick')).not.toBeInTheDocument()
+  })
 })

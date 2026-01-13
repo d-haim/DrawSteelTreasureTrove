@@ -20,7 +20,7 @@ export default function LeveledCard({
   const toGlyphHtml = (text: string) => ({ __html: replacePotencyGlyphsHtml(escapeHtml(text)) })
 
   return (
-    <article className={`item-card leveled ${compact ? 'compact' : ''}`}>
+    <article className={`item-card leveled ${inDeck ? 'in-deck' : ''} ${compact ? 'compact' : ''}`}>
       <header>
         <h3>{item.name}</h3>
         <span className="muted">{item.type}</span>

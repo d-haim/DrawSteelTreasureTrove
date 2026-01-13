@@ -51,10 +51,18 @@ body{
   border-radius: 8px;
   text-align: left;
   box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
+  border: 1px solid transparent;
 
   display: flex;
   flex-direction: column;
   min-height: 220px; /* ensures actions can stick to bottom */
+}
+
+.item-card.in-deck{
+  border: 1px solid rgba(96,165,250,0.55);
+  box-shadow:
+    0 0 0 3px rgba(96,165,250,0.12),
+    0 10px 24px rgba(0,0,0,0.35);
 }
 
 .item-card.compact{ min-height: 0; padding:0.6rem }
@@ -127,8 +135,10 @@ details summary{ cursor:pointer; color:var(--accent) }
 .filter-row{ display:flex; gap:1rem; flex-wrap:wrap }
 .filter-group{ display:flex; flex-direction:column; gap:0.35rem; min-width:160px }
 .chips{ display:flex; gap:0.4rem; flex-wrap:wrap }
-.chip-btn{ background: rgba(255,255,255,0.03); border: none; padding:0.25rem 0.5rem; border-radius: 999px; cursor:pointer; color:var(--fg) }
-.chip-btn.active{ background: linear-gradient(90deg, rgba(96,165,250,0.18), rgba(96,165,250,0.08)); box-shadow:0 1px 0 rgba(96,165,250,0.06) inset }
+.chip-btn{ background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding:0.25rem 0.5rem; border-radius: 999px; cursor:pointer; color:var(--fg); transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 120ms ease }
+.chip-btn:hover{ background: rgba(96,165,250,0.08); border-color: rgba(96,165,250,0.35) }
+.chip-btn:focus-visible{ outline: 2px solid rgba(96,165,250,0.65); outline-offset: 2px }
+.chip-btn.active{ color:#eaf2ff; background: linear-gradient(90deg, rgba(96,165,250,0.28), rgba(96,165,250,0.12)); border-color: rgba(96,165,250,0.8); box-shadow: 0 0 0 2px rgba(96,165,250,0.2), 0 10px 22px rgba(0,0,0,0.35); transform: translateY(-1px) }
 .chip-btn:disabled{ opacity:0.45; cursor:not-allowed; filter:grayscale(30%);}
 .filter-summary{ font-size:0.9rem }
 

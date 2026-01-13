@@ -200,11 +200,16 @@ export default function PrintDeck({
             Import JSON
           </button>
           <input ref={fileInputRef} type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={handleImportFile} />
+          <button
+            className="chip-btn"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-expanded={!collapsed}
+            disabled={deck.length === 0}
+          >
+            {collapsed ? `Expand (${deck.length})` : 'Collapse'}
+          </button>
           <button className="random-btn" onClick={showDeck} disabled={deck.length === 0}>
             Show deck ({deck.length})
-          </button>
-          <button className="chip-btn" onClick={() => setCollapsed(!collapsed)} aria-expanded={!collapsed}>
-            {collapsed ? `Expand (${deck.length})` : 'Collapse'}
           </button>
         </div>
       </div>

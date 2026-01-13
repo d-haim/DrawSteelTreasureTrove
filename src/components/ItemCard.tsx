@@ -20,7 +20,7 @@ export default function ItemCard({
   const toGlyphHtml = (text: string) => ({ __html: replacePotencyGlyphsHtml(escapeHtml(text)) })
 
   return (
-    <article className={`item-card ${compact ? 'compact' : ''}`}>
+    <article className={`item-card ${inDeck ? 'in-deck' : ''} ${compact ? 'compact' : ''}`}>
       <header>
         <h3>{item.name}</h3>
         {!compact && item.echelon && <span className="chip">{item.echelon}</span>}
